@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-01-16 四 18:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="hujianfeng" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org523172a">Tasks</a>
+<ul>
+<li><a href="#orga4d599c"><span class="todo TODO">TODO</span> Dive Into MySQL <code>[3/4]</code></a>
+<ul>
+<li><a href="#org28edad4"><span class="done CANCELLED">CANCELLED</span> Read Bentchmarking MySQL&#xa0;&#xa0;&#xa0;<span class="tag"><span class="CANCELLED">CANCELLED</span></span></a></li>
+<li><a href="#org40ac324"><span class="done DONE">DONE</span> 快速浏览 High Performance MySQL 的所有章节概述</a></li>
+<li><a href="#org39da433"><span class="done DONE">DONE</span> Optimize Schema and Data Types</a></li>
+<li><a href="#orgd64b1e2"><span class="todo NEXT">NEXT</span> Chapter 5 index for high performance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org9fe0ebc">Notes</a>
+<ul>
+<li><a href="#orge6cdb45">Shell script for gathering data on MySQL during bench&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org27489ad">Base Types&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org6f1dc60">Whole Numbers</a></li>
+<li><a href="#org673dd69">Real Numbers (Numbers has a fractional part.)</a></li>
+<li><a href="#org5f3325b">String Types</a></li>
+<li><a href="#orge282966">Date and Time Types</a></li>
+</ul>
+</li>
+<li><a href="#org4de2ccd">如何选择字段类型&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org758ed9c">Smaller is usually better</a></li>
+<li><a href="#orge39fb01">Simple is good</a></li>
+<li><a href="#org9e4c991">Avoid NULL if possible</a></li>
+<li><a href="#orgb92acfa">Two steps for selecting type</a></li>
+</ul>
+</li>
+<li><a href="#orgae6f0e2">Pros and Cons of MySQL denormalized schema&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgc4daa68">Pros</a></li>
+<li><a href="#org72d4a69">Cons</a></li>
+</ul>
+</li>
+<li><a href="#orge56e51b">A Mixture of Normalized and Denormalized&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org24bc76d">examples:</a></li>
+</ul>
+</li>
+<li><a href="#orgbcdd79c">使用冗余字段，冗余表加速 read query&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org4317bc3">计数表（技巧：怎么增加并发度）&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
+<li><a href="#org612ee3d">Sources</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org523172a" class="outline-2">
+<h2 id="org523172a">Tasks</h2>
+<div class="outline-text-2" id="text-org523172a">
+</div>
+<div id="outline-container-orga4d599c" class="outline-3">
+<h3 id="orga4d599c"><span class="todo TODO">TODO</span> Dive Into MySQL <code>[3/4]</code></h3>
+<div class="outline-text-3" id="text-orga4d599c">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-12 日 16:18]</span></span>
+</p>
+
+<p>
+深入学习 MySQL, 期望：
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 了解 MySQL 架构</li>
+<li class="off"><code>[&#xa0;]</code> 学习常用的 BentchMark 手法, 并动手操作</li>
+<li class="off"><code>[&#xa0;]</code> 索引优化技巧</li>
+<li class="off"><code>[&#xa0;]</code> 索引原理</li>
+</ul>
+</div>
+<div id="outline-container-org28edad4" class="outline-4">
+<h4 id="org28edad4"><span class="done CANCELLED">CANCELLED</span> Read Bentchmarking MySQL&#xa0;&#xa0;&#xa0;<span class="tag"><span class="CANCELLED">CANCELLED</span></span></h4>
+<div class="outline-text-4" id="text-org28edad4">
+<ul class="org-ul">
+<li><p>
+State "CANCELLED"  from "NEXT"       <span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 10:22] </span></span> <br />
+感觉，有关 BentchMark MySQL 这方面的知识，需要有一定的 MySQL 使用经验，
+才能看得懂的。我之前的经验主要是应用开发，现在直接看这个有点吃力。
+</p>
+
+<p>
+因此，决定直接开始看有关优化方面的东西。BentchMark 以后回过头来再看。
+</p></li>
+</ul>
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-12 日 16:27]</span></span>
+</p>
+</div>
+</div>
+<div id="outline-container-org40ac324" class="outline-4">
+<h4 id="org40ac324"><span class="done DONE">DONE</span> 快速浏览 High Performance MySQL 的所有章节概述</h4>
+<div class="outline-text-4" id="text-org40ac324">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 10:27]</span></span>
+<a href="mysql.html#org28edad4">Read Bentchmarking MySQL</a>
+</p>
+
+<p>
+快速浏览 High Performance MySQL 的所有章节概述, 找到目前感兴趣的章节，
+优先开始阅读。
+</p>
+</div>
+</div>
+<div id="outline-container-org39da433" class="outline-4">
+<h4 id="org39da433"><span class="done DONE">DONE</span> Optimize Schema and Data Types</h4>
+<div class="outline-text-4" id="text-org39da433">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 15:25]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>四，五，六章节当成一个整体来看。</li>
+<li>大致看完有关加快 alter table 的技巧等。</li>
+</ol>
+</div>
+<ul class="org-ul">
+<li><a id="org178bbf7"></a><span class="todo TODO">TODO</span> speed up alter table.<br />
+<div class="outline-text-5" id="text-org178bbf7">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 12:38]</span></span>
+<a href="mysql.html#org39da433">Optimize Schema and Data Types</a>
+</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-orgd64b1e2" class="outline-4">
+<h4 id="orgd64b1e2"><span class="todo NEXT">NEXT</span> Chapter 5 index for high performance</h4>
+<div class="outline-text-4" id="text-orgd64b1e2">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 15:28]</span></span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org9fe0ebc" class="outline-2">
+<h2 id="org9fe0ebc">Notes</h2>
+<div class="outline-text-2" id="text-org9fe0ebc">
+</div>
+<div id="outline-container-orge6cdb45" class="outline-3">
+<h3 id="orge6cdb45">Shell script for gathering data on MySQL during bench&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orge6cdb45">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 10:02]</span></span>
+<a href="mysql.html#org28edad4">Read Bentchmarking MySQL</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #2aa1ae; background-color: #292e34;">#</span><span style="color: #2aa1ae; background-color: #292e34;">!/bin/</span><span style="color: #4f97d7; font-weight: bold;">sh</span>
+<span style="color: #7590db;">INTERVAL</span>=<span style="color: #a45bad;">5</span>
+<span style="color: #7590db;">PREFIX</span>=$<span style="color: #7590db;">INTERVAL</span>-sec-status
+<span style="color: #7590db;">RUNFILE</span>=/home/benchmarks/running
+mysql -e <span style="color: #2d9574;">'SHOW GLOBAL VARIABLES'</span> &gt;&gt; mysql-variables
+<span style="color: #4f97d7; font-weight: bold;">while</span> test -e $<span style="color: #7590db;">RUNFILE</span>; <span style="color: #4f97d7; font-weight: bold;">do</span>
+    <span style="color: #7590db;">file</span>=$<span style="color: #4f97d7;">(</span>date +%F_%I<span style="color: #4f97d7;">)</span>
+    <span style="color: #7590db;">sleep</span>=$<span style="color: #4f97d7;">(</span>date +%s.%N | awk <span style="color: #2d9574;">"{print $INTERVAL - (\$1 % $INTERVAL)}"</span><span style="color: #4f97d7;">)</span>
+    sleep $<span style="color: #7590db;">sleep</span>
+    <span style="color: #7590db;">ts</span>=<span style="color: #2d9574;">"$(date +"TS %s.%N %F %T")"</span>
+    <span style="color: #7590db;">loadavg</span>=<span style="color: #2d9574;">"$(uptime)"</span>
+    <span style="color: #4f97d7;">echo</span> <span style="color: #2d9574;">"$ts $loadavg"</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-status
+    mysql -e <span style="color: #2d9574;">'SHOW GLOBAL STATUS'</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-status &amp;
+    <span style="color: #4f97d7;">echo</span> <span style="color: #2d9574;">"$ts $loadavg"</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-innodbstatus
+    mysql -e <span style="color: #2d9574;">'SHOW ENGINE INNODB STATUS\G'</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-innodbstatus &amp;
+    <span style="color: #4f97d7;">echo</span> <span style="color: #2d9574;">"$ts $loadavg"</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-processlist
+    mysql -e <span style="color: #2d9574;">'SHOW FULL PROCESSLIST\G'</span> &gt;&gt; $<span style="color: #7590db;">PREFIX</span>-$<span style="color: #4f97d7;">{</span><span style="color: #7590db;">file</span><span style="color: #4f97d7;">}</span>-processlist &amp;
+    <span style="color: #4f97d7;">echo</span> $<span style="color: #7590db;">ts</span>
+<span style="color: #4f97d7; font-weight: bold;">done</span>
+<span style="color: #4f97d7;">echo</span> Exiting because $<span style="color: #7590db;">RUNFILE</span> does not exist.
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org27489ad" class="outline-3">
+<h3 id="org27489ad">Base Types&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org27489ad">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 15:57]</span></span>
+</p>
+
+<p>
+MySQL 有类型 alias 的机制，这是为了保持向前兼容。比如 INTEGER, BOOL, NUMERIC 都是 alias.
+</p>
+</div>
+
+<div id="outline-container-org6f1dc60" class="outline-4">
+<h4 id="org6f1dc60">Whole Numbers</h4>
+<div class="outline-text-4" id="text-org6f1dc60">
+<p>
+TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT
+</p>
+
+<ul class="org-ul">
+<li>has two kinds of numbers: whole numbers (整数） and real numbers (小数）</li>
+<li>不同的整数类型使用不同的位数存储，表示不同的范围</li>
+<li>整数还有一个可选的属性： UNSIGNED</li>
+<li>宽度设定对整数类型不影响其在内存和磁盘中的表示。</li>
+</ul>
+<p>
+INT(1), 类似这里的 1 指定的是某个类型的显示宽度，而不影响其 INT 本来的存储位数 32 位
+</p>
+</div>
+</div>
+
+<div id="outline-container-org673dd69" class="outline-4">
+<h4 id="org673dd69">Real Numbers (Numbers has a fractional part.)</h4>
+<div class="outline-text-4" id="text-org673dd69">
+<p>
+FLOAT, DOUBLE, DECIMAL
+</p>
+
+<ul class="org-ul">
+<li>support exact(DECIMAL) and inexact types(FLOAT, DOUBLE).</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5f3325b" class="outline-4">
+<h4 id="org5f3325b">String Types</h4>
+<div class="outline-text-4" id="text-org5f3325b">
+</div>
+<ul class="org-ul">
+<li><a id="org0c883e4"></a>VARCHAR and Char types<br />
+<div class="outline-text-5" id="text-org0c883e4">
+<p>
+这类值如何在内存以及磁盘中表示依赖与特定的存储引擎, 这里的描述只考虑 InnoDB
+</p>
+<ul class="org-ul">
+<li>VARCHAR 根据具体 String 的长度, 分配空间，使用额外的字节数存储长度信息。</li>
+<li>VARCHAR 字段如果更新操作比较多，会有碎片化的问题。</li>
+<li>CHAR 是定长字符串。</li>
+</ul>
+</div>
+</li>
+<li><a id="orge8c69c5"></a>VARBINARY and BINARY types<br />
+<div class="outline-text-5" id="text-orge8c69c5">
+<ul class="org-ul">
+<li>Which store binary strings.</li>
+<li>Binary strings are very similar to conventional strings, but they store bytesinstead of characters.</li>
+</ul>
+</div>
+</li>
+<li><a id="orga42cbb6"></a>BLOB and TEXT types<br />
+<div class="outline-text-5" id="text-orga42cbb6">
+<p>
+String data types  for storing large amounts of data.
+</p>
+<ul class="org-ul">
+<li>they are each families of data types, example TINYTEXT, SMALL TEXT&#x2026; TINYBLOB, SMALL BLOB</li>
+<li>BLOB store data with no collation or character set.</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-orge282966" class="outline-4">
+<h4 id="orge282966">Date and Time Types</h4>
+<div class="outline-text-4" id="text-orge282966">
+<p>
+It’s worth emphasizing this: if you store or access data from multiple time zones,
+the behavior of TIMESTAMP and DATETIME will be very different. The former preserves
+values relative to the time zone in use, while the latter preserves the textual representation of the date and time
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org51aa14c"></a>DATETIME<br />
+<div class="outline-text-5" id="text-org51aa14c">
+<ul class="org-ul">
+<li>It stores the date and time packed into an integer in YYYYMMDDHHMMSS format</li>
+<li>independent of time zone</li>
+<li>This uses eight bytes of storage space</li>
+<li>from the year 1001 to the year 9999</li>
+</ul>
+</div>
+</li>
+<li><a id="org9e198e7"></a>TIMESTAMP<br />
+<div class="outline-text-5" id="text-org9e198e7">
+<ul class="org-ul">
+<li>stores the number of seconds elapsed since midnight, January 1, 1970, Greenwich Mean Time (GMT)—the same as a Unix timestamp</li>
+<li>This uses four bytes of storage space</li>
+<li>from the year 1970 to 2038</li>
+<li>The value a TIMESTAMP displays also depends on the time zone.</li>
+<li>The MySQL server, operating system, and client connections all have time zone settings.</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org4de2ccd" class="outline-3">
+<h3 id="org4de2ccd">如何选择字段类型&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org4de2ccd">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-13 一 15:39]</span></span>
+</p>
+</div>
+
+<div id="outline-container-org758ed9c" class="outline-4">
+<h4 id="org758ed9c">Smaller is usually better</h4>
+</div>
+<div id="outline-container-orge39fb01" class="outline-4">
+<h4 id="orge39fb01">Simple is good</h4>
+<div class="outline-text-4" id="text-orge39fb01">
+<ul class="org-ul">
+<li>整数一般比字符串好，因为不需要处理编码等信息</li>
+<li>使用内置类型存储日期时间等</li>
+<li>使用整数存储 IP 地址</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9e4c991" class="outline-4">
+<h4 id="org9e4c991">Avoid NULL if possible</h4>
+<div class="outline-text-4" id="text-org9e4c991">
+<p>
+对 MySQL 来说，对 nullable column 进行优化比较复杂, 且困难
+</p>
+
+<ul class="org-ul">
+<li>默认将字段设置成 NOT NULL, 除非需要特别存储 NULL</li>
+<li>InnoDB stores NULL with a single bit。</li>
+<li>当需要表达 “no value” 时可以考虑使用 0 或者 空字符串等</li>
+<li>但是，也没必要过于极端，有时候不使用 NULL 来表达 no value， 会使代码变复杂</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb92acfa" class="outline-4">
+<h4 id="orgb92acfa">Two steps for selecting type</h4>
+<div class="outline-text-4" id="text-orgb92acfa">
+<ol class="org-ol">
+<li>select general class of types.</li>
+<li>select MySQL specific type.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgae6f0e2" class="outline-3">
+<h3 id="orgae6f0e2">Pros and Cons of MySQL denormalized schema&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgae6f0e2">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 10:56]</span></span>
+</p>
+</div>
+
+<div id="outline-container-orgc4daa68" class="outline-4">
+<h4 id="orgc4daa68">Pros</h4>
+<div class="outline-text-4" id="text-orgc4daa68">
+<ul class="org-ul">
+<li>减少了 join, 可以使得很多查询在合理建立索引的情况下相比于 normalized schema 更快。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org72d4a69" class="outline-4">
+<h4 id="org72d4a69">Cons</h4>
+<div class="outline-text-4" id="text-org72d4a69">
+<ul class="org-ul">
+<li>相同的字段值在多处出现，加大了更新的难多，可能造成不一致的情况。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orge56e51b" class="outline-3">
+<h3 id="orge56e51b">A Mixture of Normalized and Denormalized&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orge56e51b">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 11:08]</span></span>
+<a href="mysql.html#org612ee3d">Sources</a>
+</p>
+
+<ul class="org-ul">
+<li>在实际的项目当中，并不是要用完全的正规化或者完全的非正规化表, 而是依照具体情况进行折中</li>
+</ul>
+</div>
+<div id="outline-container-org24bc76d" class="outline-4">
+<h4 id="org24bc76d">examples:</h4>
+<div class="outline-text-4" id="text-org24bc76d">
+<p>
+In our website example, for instance, instead of denormalizing fully you can store
+account<sub>type</sub> in both the user and message tables. This avoids the insert and delete
+problems that come with full denormalization, because you never lose information
+about the user, even when there are no messages. It won’t make the user<sub>message</sub> table
+much larger, but it will let you select the data efficiently.
+</p>
+
+<p>
+However, it’s now more expensive to update a user’s account type, because you have
+to change it in both tables. To see whether that’s a problem, you must consider how
+frequently you’ll have to make such changes and how long they will take, compared to
+how often you’ll run the SELECT query.
+</p>
+
+<p>
+Another good reason to move some data from the parent table to the child table is for
+sorting. For example, it would be extremely expensive to sort messages by the author’s
+name on a normalized schema, but you can perform such a sort very efficiently if you
+cache the author<sub>name</sub> in the message table and index it.
+</p>
+
+<p>
+It can also be useful to cache derived values. If you need to display how many messages
+each user has posted (as many forums do), either you can run an expensive subquery
+to count the data every time you display it, or you can have a num<sub>messages</sub> column in
+the user table that you update whenever a user posts a new message.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbcdd79c" class="outline-3">
+<h3 id="orgbcdd79c">使用冗余字段，冗余表加速 read query&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgbcdd79c">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 12:12]</span></span>
+</p>
+
+<p>
+You’ll often need extra indexes, redundant fields, or even cache and summary tables
+to speed up read queries. These add work to write queries and maintenance jobs, but
+this is still a technique you’ll see a lot when you design for high performance: you
+amortize the cost of the slower writes by speeding up reads significantly.
+</p>
+
+<p>
+However, this isn’t the only price you pay for faster read queries. You also increase
+development complexity for both read and write operations.
+</p>
+</div>
+</div>
+<div id="outline-container-org4317bc3" class="outline-3">
+<h3 id="org4317bc3">计数表（技巧：怎么增加并发度）&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org4317bc3">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 12:19]</span></span>
+例如, 按钮点击计数
+</p>
+
+<ul class="org-ul">
+<li><p>
+this single row is effectively a global “mutex” for any transaction that updates the counter
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql">mysql&gt; <span style="color: #4f97d7; font-weight: bold;">CREATE</span> <span style="color: #4f97d7; font-weight: bold;">TABLE</span> hit_counter <span style="color: #4f97d7;">(</span>
+  -&gt; cnt <span style="color: #ce537a; font-weight: bold;">int</span> unsigned <span style="color: #4f97d7; font-weight: bold;">not</span> <span style="color: #4f97d7; font-weight: bold;">null</span>
+  -&gt; <span style="color: #4f97d7;">)</span> ENGINE=InnoDB;
+
+mysql&gt; <span style="color: #4f97d7; font-weight: bold;">UPDATE</span> hit_counter <span style="color: #4f97d7; font-weight: bold;">SET</span> cnt = cnt + <span style="color: #a45bad;">1</span>;
+</pre>
+</div></li>
+<li><p>
+可以添加多行，不同的 update counter query 随机更新不同的 row, 而不是所有的
+update 都更新同一行。
+</p>
+
+<p>
+需要提前插入 100 个初始行
+</p>
+<div class="org-src-container">
+<pre class="src src-sql">mysql&gt; <span style="color: #4f97d7; font-weight: bold;">CREATE</span> <span style="color: #4f97d7; font-weight: bold;">TABLE</span> hit_counter <span style="color: #4f97d7;">(</span>
+  -&gt; slot tinyint unsigned <span style="color: #4f97d7; font-weight: bold;">not</span> <span style="color: #4f97d7; font-weight: bold;">null</span> <span style="color: #4f97d7; font-weight: bold;">primary</span> <span style="color: #4f97d7; font-weight: bold;">key</span>,
+  -&gt; cnt <span style="color: #ce537a; font-weight: bold;">int</span> unsigned <span style="color: #4f97d7; font-weight: bold;">not</span> <span style="color: #4f97d7; font-weight: bold;">null</span>
+  -&gt; <span style="color: #4f97d7;">)</span> ENGINE=InnoDB;
+
+mysql&gt; <span style="color: #4f97d7; font-weight: bold;">UPDATE</span> hit_counter <span style="color: #4f97d7; font-weight: bold;">SET</span> cnt = cnt + <span style="color: #a45bad;">1</span> <span style="color: #4f97d7; font-weight: bold;">WHERE</span> slot = RAND<span style="color: #4f97d7;">()</span> * <span style="color: #a45bad;">100</span>;
+
+mysql&gt; <span style="color: #4f97d7; font-weight: bold;">SELECT</span> <span style="color: #4f97d7;">SUM</span><span style="color: #4f97d7;">(</span>cnt<span style="color: #4f97d7;">)</span> <span style="color: #4f97d7; font-weight: bold;">FROM</span> hit_counter;
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org612ee3d" class="outline-2">
+<h2 id="org612ee3d">Sources</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: hujianfeng</p>
+<p class="date">Created: 2020-01-16 四 18:45</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
