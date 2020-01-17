@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-16 四 18:45 -->
+<!-- 2020-01-17 五 10:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -297,6 +297,13 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgbcdd79c">使用冗余字段，冗余表加速 read query&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org4317bc3">计数表（技巧：怎么增加并发度）&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org02be359">MySQL INDEX&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgd0b4ef5">Types of Indexes</a></li>
+<li><a href="#org6a59acf">Benefits of indexes</a></li>
+<li><a href="#org96fc39b">Indexing Strategies</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#org612ee3d">Sources</a></li>
@@ -729,14 +736,129 @@ mysql&gt; <span style="color: #4f97d7; font-weight: bold;">SELECT</span> <span s
 </ul>
 </div>
 </div>
+<div id="outline-container-org02be359" class="outline-3">
+<h3 id="org02be359">MySQL INDEX&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org02be359">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-16 四 10:20]</span></span>
+</p>
+
+<ul class="org-ul">
+<li>index is implemented by storage engine, not server.</li>
+
+<li>索引（某个column 或者 某些) 的抽象数据类型其实是一个 container，其目标是对某个 column value, 存储引擎可以
+通过该 container 快速找到这个 value 所在的行的物理地址 (例如磁盘扇区等）。</li>
+</ul>
 </div>
+
+<div id="outline-container-orgd0b4ef5" class="outline-4">
+<h4 id="orgd0b4ef5">Types of Indexes</h4>
+<div class="outline-text-4" id="text-orgd0b4ef5">
+</div>
+<ul class="org-ul">
+<li><a id="orgb783361"></a>By data structure<br />
+<ul class="org-ul">
+<li><a id="org36fdcec"></a>B+ tree index<br />
+<div class="outline-text-6" id="text-org36fdcec">
+<ul class="org-ul">
+<li>prefix or leftmost property
+so the order of column in index is important</li>
+
+<li><p>
+The storage engine can’t optimize accesses with
+any columns to the right of the first range condition
+</p>
+
+<p>
+也就是说, range query 右边的 column 不能使用索引
+例如 WHERE last<sub>name</sub>="Smith" AND first<sub>name</sub> LIKE 'J%' AND dob='1976-12-23',
+加入以上查询的索引已建，那么 dob 不能使用索引
+</p></li>
+</ul>
+</div>
+
+<ul class="org-ul">
+<li><a id="org24fcc63"></a>Clustered Indexes (Primary Key indexes)<br />
+<div class="outline-text-7" id="text-org24fcc63">
+<ul class="org-ul">
+<li>When a table has a clustered index, its full rows are actually stored in the index’s leaf pages,
+and node pages contain only the indexed columns(primary key)。</li>
+
+<li>The term “clustered” refers to the fact that rows with adjacent key values are stored
+close to each other.</li>
+
+<li>You can have only one clustered index per table, because you can’t
+store the rows in two places at once.</li>
+
+<li>Every InnoDB table will create a hidden primary column(Clustered indexes), if you donn't create.</li>
+</ul>
+</div>
+</li>
+
+
+<li><a id="org9a38fb3"></a>Nonclustered Indexes (Secondary indexes)<br />
+<div class="outline-text-7" id="text-org9a38fb3">
+<ul class="org-ul">
+<li>Secondary (nonclustered) indexes can be larger than you might expect, because
+their leaf nodes contain the primary key columns of the referenced rows.</li>
+
+<li><p>
+Secondary index accesses require two index lookups instead of one.
+this because at Secondary index a leaf node doesn't store a pointer to the referenced row's physical location;
+rather, it stores the row's primary key values.
+</p>
+
+<p>
+In InnoDB, the adaptive hash index can help reduce this penalty.(How?)
+</p></li>
+</ul>
+</div>
+</li>
+</ul>
+</li>
+
+<li><a id="org36992cf"></a>Hash index<br /></li>
+</ul>
+</li>
+<li><a id="orgee781aa"></a>Full text index<br /></li>
+</ul>
+</div>
+<div id="outline-container-org6a59acf" class="outline-4">
+<h4 id="org6a59acf">Benefits of indexes</h4>
+<div class="outline-text-4" id="text-org6a59acf">
+<ol class="org-ol">
+<li>Indexes reduce the amount of data the server has to examine.</li>
+<li>Indexes help the server avoid sorting and temporary tables.</li>
+<li>Indexes turn random I/O into sequential I/O.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org96fc39b" class="outline-4">
+<h4 id="org96fc39b">Indexing Strategies</h4>
+<div class="outline-text-4" id="text-org96fc39b">
+<ol class="org-ol">
+<li><p>
+MySQL generally can’t use indexes on columns unless the columns are
+isolated in the query.  
+</p>
+
+<p>
+“Isolating” the column means it should not be part of an expression or be inside a function in the query.
+</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
 <div id="outline-container-org612ee3d" class="outline-2">
 <h2 id="org612ee3d">Sources</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: hujianfeng</p>
-<p class="date">Created: 2020-01-16 四 18:45</p>
+<p class="date">Created: 2020-01-17 五 10:48</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
