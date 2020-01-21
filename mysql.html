@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-17 五 11:35 -->
+<!-- 2020-01-21 二 13:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -259,11 +259,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org28edad4"><span class="done CANCELLED">CANCELLED</span> Read Bentchmarking MySQL&#xa0;&#xa0;&#xa0;<span class="tag"><span class="CANCELLED">CANCELLED</span></span></a></li>
 <li><a href="#org40ac324"><span class="done DONE">DONE</span> 快速浏览 High Performance MySQL 的所有章节概述</a></li>
-<li><a href="#org39da433"><span class="done DONE">DONE</span> Optimize Schema and Data Types</a>
-<ul>
-<li><a href="#org178bbf7"><span class="todo TODO">TODO</span> speed up alter table.</a></li>
-</ul>
-</li>
+<li><a href="#org39da433"><span class="done DONE">DONE</span> Optimize Schema and Data Types</a></li>
 <li><a href="#orgd64b1e2"><span class="todo NEXT">NEXT</span> Chapter 5 index for high performance</a></li>
 </ul>
 </li>
@@ -276,19 +272,8 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org6f1dc60">Whole Numbers</a></li>
 <li><a href="#org673dd69">Real Numbers (Numbers has a fractional part.)</a></li>
-<li><a href="#org5f3325b">String Types</a>
-<ul>
-<li><a href="#org0c883e4">VARCHAR and Char types</a></li>
-<li><a href="#orge8c69c5">VARBINARY and BINARY types</a></li>
-<li><a href="#orga42cbb6">BLOB and TEXT types</a></li>
-</ul>
-</li>
-<li><a href="#orge282966">Date and Time Types</a>
-<ul>
-<li><a href="#org51aa14c">DATETIME</a></li>
-<li><a href="#org9e198e7">TIMESTAMP</a></li>
-</ul>
-</li>
+<li><a href="#org5f3325b">String Types</a></li>
+<li><a href="#orge282966">Date and Time Types</a></li>
 </ul>
 </li>
 <li><a href="#org4de2ccd">如何选择字段类型&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
@@ -314,23 +299,7 @@ for the JavaScript code in this tag.
 <li><a href="#org4317bc3">计数表（技巧：怎么增加并发度）&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org02be359">MySQL INDEX&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
 <ul>
-<li><a href="#orgd0b4ef5">Types of Indexes</a>
-<ul>
-<li><a href="#orgb783361">By data structure</a>
-<ul>
-<li><a href="#org36fdcec">B+ tree index</a>
-<ul>
-<li><a href="#org24fcc63">Clustered Indexes (Primary Key indexes)</a></li>
-<li><a href="#org9a38fb3">Nonclustered Indexes (Secondary indexes)</a></li>
-</ul>
-</li>
-<li><a href="#org36992cf">Hash index</a></li>
-</ul>
-</li>
-<li><a href="#orgee781aa">Full text index</a></li>
-<li><a href="#org6a59acf">Benefits of indexes</a></li>
-</ul>
-</li>
+<li><a href="#orgd0b4ef5">Types of Indexes</a></li>
 <li><a href="#org96fc39b">Indexing Strategies</a></li>
 </ul>
 </li>
@@ -407,15 +376,16 @@ State "CANCELLED"  from "NEXT"       <span class="timestamp-wrapper"><span class
 <li>大致看完有关加快 alter table 的技巧等。</li>
 </ol>
 </div>
-<div id="outline-container-org178bbf7" class="outline-5">
-<h5 id="org178bbf7"><span class="todo TODO">TODO</span> speed up alter table.</h5>
+<ul class="org-ul">
+<li><a id="org178bbf7"></a><span class="todo TODO">TODO</span> speed up alter table.<br />
 <div class="outline-text-5" id="text-org178bbf7">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-01-15 三 12:38]</span></span>
 <a href="mysql.html#org39da433">Optimize Schema and Data Types</a>
 </p>
 </div>
-</div>
+</li>
+</ul>
 </div>
 <div id="outline-container-orgd64b1e2" class="outline-4">
 <h4 id="orgd64b1e2"><span class="todo NEXT">NEXT</span> Chapter 5 index for high performance</h4>
@@ -512,8 +482,8 @@ FLOAT, DOUBLE, DECIMAL
 <h4 id="org5f3325b">String Types</h4>
 <div class="outline-text-4" id="text-org5f3325b">
 </div>
-<div id="outline-container-org0c883e4" class="outline-5">
-<h5 id="org0c883e4">VARCHAR and Char types</h5>
+<ul class="org-ul">
+<li><a id="org0c883e4"></a>VARCHAR and Char types<br />
 <div class="outline-text-5" id="text-org0c883e4">
 <p>
 这类值如何在内存以及磁盘中表示依赖与特定的存储引擎, 这里的描述只考虑 InnoDB
@@ -524,18 +494,16 @@ FLOAT, DOUBLE, DECIMAL
 <li>CHAR 是定长字符串。</li>
 </ul>
 </div>
-</div>
-<div id="outline-container-orge8c69c5" class="outline-5">
-<h5 id="orge8c69c5">VARBINARY and BINARY types</h5>
+</li>
+<li><a id="orge8c69c5"></a>VARBINARY and BINARY types<br />
 <div class="outline-text-5" id="text-orge8c69c5">
 <ul class="org-ul">
 <li>Which store binary strings.</li>
 <li>Binary strings are very similar to conventional strings, but they store bytesinstead of characters.</li>
 </ul>
 </div>
-</div>
-<div id="outline-container-orga42cbb6" class="outline-5">
-<h5 id="orga42cbb6">BLOB and TEXT types</h5>
+</li>
+<li><a id="orga42cbb6"></a>BLOB and TEXT types<br />
 <div class="outline-text-5" id="text-orga42cbb6">
 <p>
 String data types  for storing large amounts of data.
@@ -545,7 +513,8 @@ String data types  for storing large amounts of data.
 <li>BLOB store data with no collation or character set.</li>
 </ul>
 </div>
-</div>
+</li>
+</ul>
 </div>
 
 <div id="outline-container-orge282966" class="outline-4">
@@ -558,8 +527,8 @@ values relative to the time zone in use, while the latter preserves the textual 
 </p>
 </div>
 
-<div id="outline-container-org51aa14c" class="outline-5">
-<h5 id="org51aa14c">DATETIME</h5>
+<ul class="org-ul">
+<li><a id="org51aa14c"></a>DATETIME<br />
 <div class="outline-text-5" id="text-org51aa14c">
 <ul class="org-ul">
 <li>It stores the date and time packed into an integer in YYYYMMDDHHMMSS format</li>
@@ -568,9 +537,8 @@ values relative to the time zone in use, while the latter preserves the textual 
 <li>from the year 1001 to the year 9999</li>
 </ul>
 </div>
-</div>
-<div id="outline-container-org9e198e7" class="outline-5">
-<h5 id="org9e198e7">TIMESTAMP</h5>
+</li>
+<li><a id="org9e198e7"></a>TIMESTAMP<br />
 <div class="outline-text-5" id="text-org9e198e7">
 <ul class="org-ul">
 <li>stores the number of seconds elapsed since midnight, January 1, 1970, Greenwich Mean Time (GMT)—the same as a Unix timestamp</li>
@@ -580,7 +548,8 @@ values relative to the time zone in use, while the latter preserves the textual 
 <li>The MySQL server, operating system, and client connections all have time zone settings.</li>
 </ul>
 </div>
-</div>
+</li>
+</ul>
 </div>
 </div>
 
@@ -773,24 +742,28 @@ mysql&gt; <span style="color: #4f97d7; font-weight: bold;">SELECT</span> <span s
 <span class="timestamp-wrapper"><span class="timestamp">[2020-01-16 四 10:20]</span></span>
 </p>
 
-<ul class="org-ul">
-<li>index is implemented by storage engine, not server.</li>
+<p>
+index is implemented by storage engine, not server.
+</p>
 
-<li>索引（某个column 或者 某些) 的抽象数据类型其实是一个 container，其目标是对某个 column value, 存储引擎可以
-通过该 container 快速找到这个 value 所在的行的物理地址 (例如磁盘扇区等）。</li>
-</ul>
+<p>
+索引（某个column 或者 某些) 的抽象数据类型其实是一个 container，其目标是对某个 column value, 存储引擎可以
+通过该 container 快速找到这个 value 所在的行的物理地址 (例如磁盘扇区等）。
+</p>
+
+<p>
+inserting new rows into the table with more indexes is slower.
+</p>
 </div>
 
 <div id="outline-container-orgd0b4ef5" class="outline-4">
 <h4 id="orgd0b4ef5">Types of Indexes</h4>
 <div class="outline-text-4" id="text-orgd0b4ef5">
 </div>
-<div id="outline-container-orgb783361" class="outline-5">
-<h5 id="orgb783361">By data structure</h5>
-<div class="outline-text-5" id="text-orgb783361">
-</div>
-<div id="outline-container-org36fdcec" class="outline-6">
-<h6 id="org36fdcec">B+ tree index</h6>
+<ul class="org-ul">
+<li><a id="orgb783361"></a>By data structure<br />
+<ul class="org-ul">
+<li><a id="org36fdcec"></a>B+ tree index<br />
 <div class="outline-text-6" id="text-org36fdcec">
 <ul class="org-ul">
 <li>prefix or leftmost property
@@ -809,8 +782,8 @@ any columns to the right of the first range condition
 </ul>
 </div>
 
-<div id="outline-container-org24fcc63" class="outline-7">
-<h7 id="org24fcc63">Clustered Indexes (Primary Key indexes)</h7>
+<ul class="org-ul">
+<li><a id="org24fcc63"></a>Clustered Indexes (Primary Key indexes)<br />
 <div class="outline-text-7" id="text-org24fcc63">
 <ul class="org-ul">
 <li>When a table has a clustered index, its full rows are actually stored in the index’s leaf pages,
@@ -823,13 +796,31 @@ close to each other.</li>
 store the rows in two places at once.</li>
 
 <li>Every InnoDB table will create a hidden primary column(Clustered indexes), if you donn't create.</li>
+
+<li>the clustered index “is” the table in InnoDB, there’s no separate row storage as there is for MyISAM.</li>
 </ul>
-</div>
-</div>
 
+<blockquote>
+<p>
+Each leaf node in the clustered index contains the primary key value, the transaction
+ID, and rollback pointer InnoDB uses for transactional and MVCC purposes, and the
+rest of the columns (in this case, col2). If the primary key is on a column prefix, InnoDB
+includes the full column value with the rest of the columns.
+</p>
 
-<div id="outline-container-org9a38fb3" class="outline-7">
-<h7 id="org9a38fb3">Nonclustered Indexes (Secondary indexes)</h7>
+<p>
+Also in contrast to MyISAM, secondary indexes are very different from clustered indexes in InnoDB. 
+Instead of storing “row pointers,” InnoDB’s secondary index leaf
+nodes contain the primary key values, which serve as the “pointers” to the rows. This
+strategy reduces the work needed to maintain secondary indexes when rows move or
+when there’s a data page split. Using the row’s primary key values as the pointer makes
+the index larger, but it means InnoDB can move a row without updating pointers to it.
+</p>
+</blockquote>
+</div>
+</li>
+
+<li><a id="org9a38fb3"></a>Nonclustered Indexes (Secondary indexes)<br />
 <div class="outline-text-7" id="text-org9a38fb3">
 <ul class="org-ul">
 <li>Secondary (nonclustered) indexes can be larger than you might expect, because
@@ -846,18 +837,15 @@ In InnoDB, the adaptive hash index can help reduce this penalty.(How?)
 </p></li>
 </ul>
 </div>
-</div>
-</div>
+</li>
+</ul>
+</li>
 
-<div id="outline-container-org36992cf" class="outline-6">
-<h6 id="org36992cf">Hash index</h6>
-</div>
-</div>
-<div id="outline-container-orgee781aa" class="outline-5">
-<h5 id="orgee781aa">Full text index</h5>
-</div>
-<div id="outline-container-org6a59acf" class="outline-5">
-<h5 id="org6a59acf">Benefits of indexes</h5>
+<li><a id="org36992cf"></a>Hash index<br /></li>
+</ul>
+</li>
+<li><a id="orgee781aa"></a>Full text index<br /></li>
+<li><a id="org6a59acf"></a>Benefits of indexes<br />
 <div class="outline-text-5" id="text-org6a59acf">
 <ol class="org-ol">
 <li>Indexes reduce the amount of data the server has to examine.</li>
@@ -865,7 +853,8 @@ In InnoDB, the adaptive hash index can help reduce this penalty.(How?)
 <li>Indexes turn random I/O into sequential I/O.</li>
 </ol>
 </div>
-</div>
+</li>
+</ul>
 </div>
 
 <div id="outline-container-org96fc39b" class="outline-4">
@@ -880,19 +869,63 @@ isolated in the query.
 <p>
 “Isolating” the column means it should not be part of an expression or be inside a function in the query.
 </p></li>
+
+<li><p>
+多行索引，顺序比较重要，一般原则
+</p>
+
+<p>
+column with higher selectivity is first.
+</p></li>
+
+<li><p>
+Covering index
+</p>
+
+<p>
+An index that contains (or "covers") all the data needed to satisfy a query is called a covering index.
+</p>
+
+<p>
+也就是说，index 数据结构中已经存在 query 要取得的数据，不需要额外操作（读取整行等）。
+对于 InnoDB 中的 secondary indexes 来说，就是不需要再通过 leaf node 中的主键去主键索引中
+读取整行。
+</p>
+
+<p>
+Hash, spatial, and full-text indexes don’t store these values,
+so MySQL can use only B-Tree indexes to cover queries. 
+</p>
+
+<p>
+When you issue a query that is covered by an index (an index-covered query), you’ll see
+"Using index" in the Extra column in EXPLAIN.
+</p></li>
+
+<li><p>
+Index statistics
+</p>
+
+<blockquote>
+<p>
+Perhaps the easiest and most accurate is the INFORMATION<sub>SCHEMA.INDEX</sub><sub>STATISTICS</sub> table
+in Percona Server and MariaDB. Just enable the <i>userstats</i> server variable (it’s disabled
+by default) and let the server run for a while, and you’ll be able to see how much each
+index is used.
+</p>
+</blockquote></li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-
 <div id="outline-container-org612ee3d" class="outline-2">
 <h2 id="org612ee3d">Sources</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: hujianfeng</p>
-<p class="date">Created: 2020-01-17 五 11:35</p>
+<p class="date">Created: 2020-01-21 二 13:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

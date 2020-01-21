@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-17 五 11:35 -->
+<!-- 2020-01-21 二 13:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -255,8 +255,8 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgdcf1c48">Tasks</a>
 <ul>
-<li><a href="#org2554b2a"><span class="todo TODO">TODO</span> AlgoSort <code>[0/3]</code></a></li>
-<li><a href="#org7aaca9c"><span class="todo TODO">TODO</span> B+ tree</a></li>
+<li><a href="#org2554b2a"><span class="todo NEXT">NEXT</span> AlgoSort <code>[0/3]</code></a></li>
+<li><a href="#org7aaca9c"><span class="todo NEXT">NEXT</span> B+ tree</a></li>
 </ul>
 </li>
 <li><a href="#org3ef03c1">Notes</a>
@@ -267,6 +267,7 @@ for the JavaScript code in this tag.
 <li><a href="#org73b893c">Bloom filter</a></li>
 </ul>
 </li>
+<li><a href="#org3939a5a">B-tree (How used by database)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
 </li>
 <li><a href="#orgae6c44d">Sources</a></li>
@@ -280,7 +281,7 @@ for the JavaScript code in this tag.
 <div class="outline-text-2" id="text-orgdcf1c48">
 </div>
 <div id="outline-container-org2554b2a" class="outline-3">
-<h3 id="org2554b2a"><span class="todo TODO">TODO</span> AlgoSort <code>[0/3]</code></h3>
+<h3 id="org2554b2a"><span class="todo NEXT">NEXT</span> AlgoSort <code>[0/3]</code></h3>
 <div class="outline-text-3" id="text-org2554b2a">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-01-12 日 16:36]</span></span>
@@ -294,7 +295,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="outline-container-org7aaca9c" class="outline-3">
-<h3 id="org7aaca9c"><span class="todo TODO">TODO</span> B+ tree</h3>
+<h3 id="org7aaca9c"><span class="todo NEXT">NEXT</span> B+ tree</h3>
 <div class="outline-text-3" id="text-org7aaca9c">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-01-16 四 10:36]</span></span>
@@ -368,6 +369,26 @@ Bloom filter is all about testing Membership in a set.
 </div>
 </div>
 </div>
+<div id="outline-container-org3939a5a" class="outline-3">
+<h3 id="org3939a5a">B-tree (How used by database)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org3939a5a">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-01-19 日 16:26]</span></span>
+</p>
+
+<ul class="org-ul">
+<li>a self-balanced multi-way search tree.</li>
+<li>balance itself by split or join(fusion) operator.</li>
+<li>a version of (a, b) tree, where the B-tree of order d is an (a, b) tree with a = d / 2 and b = d;</li>
+<li>By setting the parameters a and b appropriately with respect to the size of disk blocks, we can derive a data structure
+that achieves good external-memory performance.</li>
+<li>A B-tree with n entries has I/O complexity O(logB n) for search
+or update operation, and uses O(n/B) blocks, where B is the size of a block.</li>
+
+<li>where B denotes the number of elements that fit into a block.</li>
+</ul>
+</div>
+</div>
 </div>
 <div id="outline-container-orgae6c44d" class="outline-2">
 <h2 id="orgae6c44d">Sources</h2>
@@ -375,7 +396,7 @@ Bloom filter is all about testing Membership in a set.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: hujianfeng</p>
-<p class="date">Created: 2020-01-17 五 11:35</p>
+<p class="date">Created: 2020-01-21 二 13:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
