@@ -6,7 +6,7 @@
 <!-- 2020-04-05 日 18:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>h-notes</title>
+<title>&lrm;</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="melp" />
 <style type="text/css">
@@ -193,6 +193,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -242,24 +248,109 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">h-notes</h1>
-<ul class="org-ul">
-<li><a href="diary.html">diary</a></li>
-<li><a href="golang.html">golang</a></li>
-<li><a href="http.html">http</a></li>
-<li><a href="interview.html">interview</a></li>
-<li><a href="interview-docker.html">interview-docker</a></li>
-<li><a href="interview-mysql.html">interview-mysql</a></li>
-<li><a href="interview-redis.html">interview-redis</a></li>
-<li><a href="java-design-pattern.html">java-design-pattern</a></li>
-<li><a href="leetcode.html">leetcode</a></li>
-<li><a href="network-programming.html">network-programming</a></li>
-<li><a href="racket.html">racket</a></li>
-<li><a href="refile.html">refile</a></li>
-<li><a href="sentences.html">sentences</a></li>
-<li><a href="system-design.html">system-design</a></li>
-<li><a href="todo.html">todo</a></li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6df1054">Tasks</a>
+<ul>
+<li><a href="#org0744293"><span class="todo NEXT">NEXT</span> today design pattern</a></li>
 </ul>
+</li>
+<li><a href="#orgd6bfc7a">Notes</a>
+<ul>
+<li><a href="#orgfce3ed1">Factory Method Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org82338e4">Abstract Factory Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org2bd5d72">Builder Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgd78d040">Dependent Injection Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6df1054" class="outline-2">
+<h2 id="org6df1054">Tasks</h2>
+<div class="outline-text-2" id="text-org6df1054">
+</div>
+<div id="outline-container-org0744293" class="outline-3">
+<h3 id="org0744293"><span class="todo NEXT">NEXT</span> today design pattern</h3>
+<div class="outline-text-3" id="text-org0744293">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-04 六 11:55]</span></span>
+<a href="interview-mysql.html#org29118f8">Notes</a>
+SCHEDULED: <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-04 六 .+3d&gt;</span></span>
+</p>
+<p>
+:STYLE: habit
+:REPEAT<sub>TO</sub><sub>STATE</sub>: NEXT
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd6bfc7a" class="outline-2">
+<h2 id="orgd6bfc7a">Notes</h2>
+<div class="outline-text-2" id="text-orgd6bfc7a">
+</div>
+<div id="outline-container-orgfce3ed1" class="outline-3">
+<h3 id="orgfce3ed1">Factory Method Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgfce3ed1">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-21 六 10:31]</span></span>
+</p>
+
+<p>
+顾名思义，该设计模式用来创建 Class 实例。
+为谁创建实例？为客户端。
+为什么单独需要一个 Method 来创建实例？为了提供一个抽象，让客户端不需要关心具体的多个类之间的的继承关系，客户端只需要知道 super class，或者接口。
+</p>
+</div>
+</div>
+<div id="outline-container-org82338e4" class="outline-3">
+<h3 id="org82338e4">Abstract Factory Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org82338e4">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-21 六 18:05]</span></span>
+</p>
+
+<p>
+定义？ : 是一个抽象，对使用方屏蔽了一簇对象的创建细节（比如是那些具体的类），使得使用方只需要知道抽象类或者接口的存在而不需要知道具体的实现类或者子类
+</p>
+</div>
+</div>
+<div id="outline-container-org2bd5d72" class="outline-3">
+<h3 id="org2bd5d72">Builder Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org2bd5d72">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-22 日 09:16]</span></span>
+</p>
+
+<p>
+用途？当类成员属性有很多的时候，类构造函数参数变得很长，可以建立一个 builder 类来专门负责这些复杂对象的构建。
+     这样以来，constructor 这需要接受一个 builder 对象即可。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd78d040" class="outline-3">
+<h3 id="orgd78d040">Dependent Injection Design Pattern&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgd78d040">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-22 日 16:52]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>用途？是一种抽象，分离了 object 的 use 和 construct</li>
+
+<li>Dependency injection involves four roles:</li>
+
+<li>the service object(s) to be used</li>
+<li>the client object that is depending on the service(s) it uses</li>
+<li>the interfaces that define how the client may use the services</li>
+<li>the injector, which is responsible for constructing the services and injecting them into the client</li>
+</ol>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>

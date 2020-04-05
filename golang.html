@@ -6,7 +6,7 @@
 <!-- 2020-04-05 日 18:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>h-notes</title>
+<title>&lrm;</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="melp" />
 <style type="text/css">
@@ -242,24 +242,150 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">h-notes</h1>
-<ul class="org-ul">
-<li><a href="diary.html">diary</a></li>
-<li><a href="golang.html">golang</a></li>
-<li><a href="http.html">http</a></li>
-<li><a href="interview.html">interview</a></li>
-<li><a href="interview-docker.html">interview-docker</a></li>
-<li><a href="interview-mysql.html">interview-mysql</a></li>
-<li><a href="interview-redis.html">interview-redis</a></li>
-<li><a href="java-design-pattern.html">java-design-pattern</a></li>
-<li><a href="leetcode.html">leetcode</a></li>
-<li><a href="network-programming.html">network-programming</a></li>
-<li><a href="racket.html">racket</a></li>
-<li><a href="refile.html">refile</a></li>
-<li><a href="sentences.html">sentences</a></li>
-<li><a href="system-design.html">system-design</a></li>
-<li><a href="todo.html">todo</a></li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org35d19b3">Tasks</a>
+<ul>
+<li><a href="#org510b40e"><span class="todo TODO">TODO</span> 使用 Golang 以及 react 实现一个 GTD 系统</a></li>
+<li><a href="#orgb4aae05"><span class="todo TODO">TODO</span> read go modules blogs</a></li>
+<li><a href="#orgfc5cd32"><span class="todo TODO">TODO</span> 制定 MGT (master golang target) 大纲</a></li>
 </ul>
+</li>
+<li><a href="#org819041d">Notes</a>
+<ul>
+<li><a href="#org38e12ad">golang net/http abstract&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgfea811b">golang panic&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgbffbed7">go module&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgd45fdd7">workflows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8837616">Resources</a>
+<ul>
+<li><a href="#orgfa421ea">go-for-range-details&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org35d19b3" class="outline-2">
+<h2 id="org35d19b3">Tasks</h2>
+<div class="outline-text-2" id="text-org35d19b3">
+</div>
+<div id="outline-container-org510b40e" class="outline-3">
+<h3 id="org510b40e"><span class="todo TODO">TODO</span> 使用 Golang 以及 react 实现一个 GTD 系统</h3>
+<div class="outline-text-3" id="text-org510b40e">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-01 三 21:11]</span></span>
+</p>
+</div>
+</div>
+<div id="outline-container-orgb4aae05" class="outline-3">
+<h3 id="orgb4aae05"><span class="todo TODO">TODO</span> read go modules blogs</h3>
+<div class="outline-text-3" id="text-orgb4aae05">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-01 三 16:52]</span></span>
+</p>
+
+<p>
+<a href="https://blog.golang.org/v2-go-modules">https://blog.golang.org/v2-go-modules</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgfc5cd32" class="outline-3">
+<h3 id="orgfc5cd32"><span class="todo TODO">TODO</span> 制定 MGT (master golang target) 大纲</h3>
+<div class="outline-text-3" id="text-orgfc5cd32">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-01 三 21:08]</span></span>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org819041d" class="outline-2">
+<h2 id="org819041d">Notes</h2>
+<div class="outline-text-2" id="text-org819041d">
+</div>
+<div id="outline-container-org38e12ad" class="outline-3">
+<h3 id="org38e12ad">golang net/http abstract&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org38e12ad">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-29 日 08:35]</span></span>
+</p>
+
+
+<ol class="org-ol">
+<li>http.ListenAndServe(":9000", handler)</li>
+<li>interface Handler { ServerHttp(w *ResponseWriter, r *Request) }</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgfea811b" class="outline-3">
+<h3 id="orgfea811b">golang panic&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgfea811b">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-28 六 18:46]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>panic 可以由 golang runtime error 导致，也可以通过调用 panic 来产生</li>
+<li>当 panic 产生时，所有函数调用按照调用栈的先后顺序依次返回之后后整个程序 crash.</li>
+<li>在上述调用栈返回的过程当中，如果有某个函数的 defer 调用了 recover, 那么退栈停止，
+程序恢复正常的执行。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgbffbed7" class="outline-3">
+<h3 id="orgbffbed7">go module&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgbffbed7">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-01 三 16:22]</span></span>
+</p>
+
+<p>
+dependencies manager
+</p>
+
+<p>
+<a href="https://blog.golang.org/using-go-modules">using go modules</a> 
+</p>
+</div>
+
+<div id="outline-container-orgd45fdd7" class="outline-4">
+<h4 id="orgd45fdd7">workflows</h4>
+<div class="outline-text-4" id="text-orgd45fdd7">
+<ol class="org-ol">
+<li>go mod init <b>mod-name</b></li>
+<li>go build, go test (side effect) add new dependencies to go.mod as needed</li>
+<li>go list -m all prints the current module's dependencies (include indirect dependency)</li>
+<li>go get changes the required version of a dependency</li>
+<li>go mod tidy removes unused dependencies</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8837616" class="outline-2">
+<h2 id="org8837616">Resources</h2>
+<div class="outline-text-2" id="text-org8837616">
+</div>
+<div id="outline-container-orgfa421ea" class="outline-3">
+<h3 id="orgfa421ea">go-for-range-details&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgfa421ea">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-03-19 四 10:36]</span></span>
+</p>
+
+<p>
+<a href="https://garbagecollected.org/2017/02/22/go-range-loop-internals/">https://garbagecollected.org/2017/02/22/go-range-loop-internals/</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>

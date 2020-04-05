@@ -6,7 +6,7 @@
 <!-- 2020-04-05 日 18:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>h-notes</title>
+<title>&lrm;</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="melp" />
 <style type="text/css">
@@ -193,6 +193,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -242,24 +248,183 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">h-notes</h1>
-<ul class="org-ul">
-<li><a href="diary.html">diary</a></li>
-<li><a href="golang.html">golang</a></li>
-<li><a href="http.html">http</a></li>
-<li><a href="interview.html">interview</a></li>
-<li><a href="interview-docker.html">interview-docker</a></li>
-<li><a href="interview-mysql.html">interview-mysql</a></li>
-<li><a href="interview-redis.html">interview-redis</a></li>
-<li><a href="java-design-pattern.html">java-design-pattern</a></li>
-<li><a href="leetcode.html">leetcode</a></li>
-<li><a href="network-programming.html">network-programming</a></li>
-<li><a href="racket.html">racket</a></li>
-<li><a href="refile.html">refile</a></li>
-<li><a href="sentences.html">sentences</a></li>
-<li><a href="system-design.html">system-design</a></li>
-<li><a href="todo.html">todo</a></li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9c53b1f">Tasks</a></li>
+<li><a href="#org279f3bb">Notes</a>
+<ul>
+<li><a href="#org50171b0">有关 Dcoker 容器主进程指定&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org8342888">Dockerfile Env Command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgdb87917">Dockerfile ARG command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org842599f">Dockerfile VOLUME command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org9650416">Dockerfile EXPOSE command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org0817751">Dockerfile WORKDIR command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org084f705">Docker build image 构建上下文的概念&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org842b5c9">Dockerfile USER command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9c53b1f" class="outline-2">
+<h2 id="org9c53b1f">Tasks</h2>
+</div>
+<div id="outline-container-org279f3bb" class="outline-2">
+<h2 id="org279f3bb">Notes</h2>
+<div class="outline-text-2" id="text-org279f3bb">
+</div>
+<div id="outline-container-org50171b0" class="outline-3">
+<h3 id="org50171b0">有关 Dcoker 容器主进程指定&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org50171b0">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:02]</span></span>
+</p>
+
+<p>
+<a href="https://docker_practice.gitee.io/us-en/image/dockerfile/entrypoint.html">https://docker_practice.gitee.io/us-en/image/dockerfile/entrypoint.html</a>
+</p>
+
+<ol class="org-ol">
+<li>首先启动容器，实际上就是在启动主进程。容器为主进程提供了独立的运行环境。</li>
+<li>容器以具体的本地镜像为基础进行启动。因此镜像在构建阶段需要指定进程的启动运行命令。</li>
+<li><p>
+有两条 Dockerfile Command 与之相关：ENTRYPOINT, CMD
+</p>
+
+<p>
+3.1 CMD 用来指定镜像在被启动时的默认的程序以及参数，该程序以及参数在 docker run 时可以被替换。
+3.2 ENTRYPOINT 的目的和 CMD 一样，其指定的主进程命令以及参数，也可以在 docker run 时被替换，但是需要 &#x2013;entrypoint 来指定。
+</p>
+
+<p>
+当指定了 ENTRYPOINT 以后，CMD 的意义就发生了变化：不是直接运行 CMD 指定的命令，而是将 CMD 的内容作为参数传给 ENTRYPOINT。
+</p>
+
+<p>
+ENTRYPOINT CMD
+</p></li>
+
+<li><p>
+ENTRYPOINT 应用场景
+</p>
+
+<p>
+4.1 用来指定基本的主进程命令以及参数，而其他参数可以在 docker run 时动态传递。
+</p>
+
+<p>
+4.2 有些时候程序在启动之前需要做一些其他配置，初始化的工作。
+</p>
+
+<p>
+这类复杂的主进程启动配置可以使用如下方法：
+</p>
+
+<p>
+写一个 entrypoint.sh 脚本，该脚本作为实际的启动命令，用 ENTRYPOINT 指定。然后，动态的 CMD 参数就传给了 entrypoint.sh，让其根据参数做具体的处理。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org8342888" class="outline-3">
+<h3 id="org8342888">Dockerfile Env Command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org8342888">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:32]</span></span>
+</p>
+
+<p>
+定义变量，如果一份 Dockerfile 有重复的值，比如版本号之类，可以使用 Env 定义变量，并设置其值，
+然后使用变量代替 repeat。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdb87917" class="outline-3">
+<h3 id="orgdb87917">Dockerfile ARG command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgdb87917">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:37]</span></span>
+</p>
+
+<p>
+不同于 ENV，ARG 定义了动态变量，可以在 docker build 时，使用 &#x2013;build-arg key=val 来覆盖默认值。
+这样就可以使用相同的 Dockerfile 构建不同的镜像了。
+</p>
+</div>
+</div>
+<div id="outline-container-org842599f" class="outline-3">
+<h3 id="org842599f">Dockerfile VOLUME command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org842599f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:41]</span></span>
+</p>
+
+<p>
+使用 <b>VOLUME /data</b> 可以指定匿名卷，容器主进程运行时任何向 /data 写入的数据都不会记录在容器存储层（容器动态层，随着容器的退出而自动消亡）。
+</p>
+
+<p>
+可以用 docker run  -d -v mydata:/data xxx，将 /data 实名化，将其挂载至 host mydata 路径
+</p>
+</div>
+</div>
+<div id="outline-container-org9650416" class="outline-3">
+<h3 id="org9650416">Dockerfile EXPOSE command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org9650416">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:47]</span></span>
+</p>
+
+<p>
+仅仅是 容器内端口 声明，不做实际的挂载。
+</p>
+</div>
+</div>
+<div id="outline-container-org0817751" class="outline-3">
+<h3 id="org0817751">Dockerfile WORKDIR command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org0817751">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:52]</span></span>
+<a href="file:///home/melp/golang-code/lightsocks/Dockerfile#orga801645">file:///home/melp/golang-code/lightsocks/Dockerfile#orga801645</a>
+</p>
+
+<p>
+指定之后各层的当前目录
+</p>
+</div>
+</div>
+<div id="outline-container-org084f705" class="outline-3">
+<h3 id="org084f705">Docker build image 构建上下文的概念&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org084f705">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:55]</span></span>
+</p>
+
+<p>
+docker build -t imagename:tag .
+</p>
+
+<p>
+可以看到，该命令指定当前目录为 构建上下文。当执行 COPY src dest 等命令的时候，src 里面路径总是以 构建上下文目录 为起点的。
+</p>
+</div>
+</div>
+<div id="outline-container-org842b5c9" class="outline-3">
+<h3 id="org842b5c9">Dockerfile USER command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org842b5c9">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 11:58]</span></span>
+</p>
+
+<p>
+类比 WORKDIR, USER 指令之后各层命令的 用户身份。该用户需要提前 create.
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>

@@ -6,7 +6,7 @@
 <!-- 2020-04-05 日 18:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>h-notes</title>
+<title>&lrm;</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="melp" />
 <style type="text/css">
@@ -242,24 +242,58 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">h-notes</h1>
-<ul class="org-ul">
-<li><a href="diary.html">diary</a></li>
-<li><a href="golang.html">golang</a></li>
-<li><a href="http.html">http</a></li>
-<li><a href="interview.html">interview</a></li>
-<li><a href="interview-docker.html">interview-docker</a></li>
-<li><a href="interview-mysql.html">interview-mysql</a></li>
-<li><a href="interview-redis.html">interview-redis</a></li>
-<li><a href="java-design-pattern.html">java-design-pattern</a></li>
-<li><a href="leetcode.html">leetcode</a></li>
-<li><a href="network-programming.html">network-programming</a></li>
-<li><a href="racket.html">racket</a></li>
-<li><a href="refile.html">refile</a></li>
-<li><a href="sentences.html">sentences</a></li>
-<li><a href="system-design.html">system-design</a></li>
-<li><a href="todo.html">todo</a></li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgfa891b5"><span class="todo TODO">TODO</span> 有关 海量数据处理 面试题目</a></li>
+<li><a href="#org1c6f737"><span class="todo TODO">TODO</span> 数据卷 Volume 如何使用</a></li>
+<li><a href="#org5d229e3">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
+</div>
+</div>
+<div id="outline-container-orgfa891b5" class="outline-2">
+<h2 id="orgfa891b5"><span class="todo TODO">TODO</span> 有关 海量数据处理 面试题目</h2>
+<div class="outline-text-2" id="text-orgfa891b5">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 17:42]</span></span>
+</p>
+
+
+<p>
+<a href="https://github.com/doocs/advanced-java#%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">https://github.com/doocs/advanced-java#%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org1c6f737" class="outline-2">
+<h2 id="org1c6f737"><span class="todo TODO">TODO</span> 数据卷 Volume 如何使用</h2>
+<div class="outline-text-2" id="text-org1c6f737">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-04 六 17:25]</span></span>
+</p>
+
+<p>
+通常容器的存储层会随着容器的消亡和消失，因此需要通过 Volume 将容器封装的应用产生的需要持久化的数据存储在 Host 或者其他网络文件服务上。
+</p>
+</div>
+</div>
+<div id="outline-container-org5d229e3" class="outline-2">
+<h2 id="org5d229e3">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h2>
+<div class="outline-text-2" id="text-org5d229e3">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 14:45]</span></span>
+</p>
+
+<p>
+这是一个 prefix command
+</p>
+
+<p>
+当其他 Dockerfile command 被 prefix ONBUILD，那么该 command 不会在当前 Dockerfile 被 build 时运行，
+而是以该 Dockerfile 构建的镜像为基础的孩子 Dockerfile 被 build 时在运行。
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>

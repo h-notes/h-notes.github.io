@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-04-05 日 18:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="melp" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga4b4034">Tasks</a></li>
+<li><a href="#org8d371d9">Notes</a>
+<ul>
+<li><a href="#org7e0c7dd">bloom filter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org7bf5b23">如果有大量的key需要设置同一时间过期，一般需要注意什么？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orga7fb02d">使用过Redis做异步队列么，你是怎么用的？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgd82496d">Redis是怎么持久化的？服务主从数据怎么交互的？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgc1e08f4"><span class="done DONE">DONE</span> Pipeline有什么好处，为什么要用pipeline？</a></li>
+<li><a href="#orgb4ca21f"><span class="todo TODO">TODO</span> Redis的同步机制了解么？</a></li>
+<li><a href="#org8c2813e"><span class="todo TODO">TODO</span> 是否使用过Redis集群，集群的高可用怎么保证，集群的原理是什么？</a></li>
+<li><a href="#org267a9f5">缓存与数据库双写一致&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org43ca331">读操作流程</a></li>
+<li><a href="#orgbc1546e">更新操作</a></li>
+<li><a href="#org159ab14">两种策略</a></li>
+</ul>
+</li>
+<li><a href="#orgae10777">zinterstore&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga4b4034" class="outline-2">
+<h2 id="orga4b4034">Tasks</h2>
+</div>
+<div id="outline-container-org8d371d9" class="outline-2">
+<h2 id="org8d371d9">Notes</h2>
+<div class="outline-text-2" id="text-org8d371d9">
+</div>
+<div id="outline-container-org7e0c7dd" class="outline-3">
+<h3 id="org7e0c7dd">bloom filter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org7e0c7dd">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:35]</span></span>
+</p>
+
+<p>
+用于检索一个元素是否在一个集合中。
+</p>
+
+<p>
+可以用来处理缓存穿透
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7bf5b23" class="outline-3">
+<h3 id="org7bf5b23">如果有大量的key需要设置同一时间过期，一般需要注意什么？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org7bf5b23">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:42]</span></span>
+</p>
+
+<p>
+如果大量的 key 过期时间设置的过于集中，到过期的时间点，Redis 可能会出现短暂的卡顿现象。
+严重的话会出现缓存雪崩。
+</p>
+
+<p>
+解决办法：在时间上在个随机值，使得过期时间分散一些。
+</p>
+</div>
+</div>
+<div id="outline-container-orga7fb02d" class="outline-3">
+<h3 id="orga7fb02d">使用过Redis做异步队列么，你是怎么用的？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orga7fb02d">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:47]</span></span>
+</p>
+
+<p>
+一般使用list结构作为队列，rpush生产消息，lpop消费消息。当lpop没有消息的时候，要适当sleep一会再重试。
+</p>
+
+<ol class="org-ol">
+<li>不用 sleep 怎么做?</li>
+</ol>
+
+<p>
+list还有个指令叫blpop，在没有消息的时候，它会阻塞住直到消息到来
+</p>
+
+<ol class="org-ol">
+<li>如果对方接着追问能不能生产一次消费多次呢？</li>
+</ol>
+
+<p>
+使用pub/sub主题订阅者模式，可以实现 1:N 的消息队列。
+</p>
+
+<ol class="org-ol">
+<li>如果对方继续追问 pub/su b有什么缺点？</li>
+</ol>
+
+<p>
+在消费者下线的情况下，生产的消息会丢失，得使用专业的消息队列如RocketMQ等。
+</p>
+
+<ol class="org-ol">
+<li>如果对方究极TM追问Redis如何实现延时队列？</li>
+</ol>
+
+<p>
+使用sortedset，拿时间戳作为score，消息内容作为key调用zadd来生产消息，消费者用zrangebyscore指令获取N秒之前的数据轮询进行处理。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd82496d" class="outline-3">
+<h3 id="orgd82496d">Redis是怎么持久化的？服务主从数据怎么交互的？&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgd82496d">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:51]</span></span>
+</p>
+
+<p>
+RDB做镜像全量持久化，AOF做增量持久化。因为RDB会耗费较长时间，不够实时，在停机的时候会导致大量丢失数据，所以需要AOF来配合使用。
+在redis实例重启时，会使用RDB持久化文件重新构建内存，再使用AOF重放近期的操作指令来实现完整恢复重启之前的状态。
+</p>
+
+<ol class="org-ol">
+<li><p>
+对方追问那如果突然机器掉电会怎样？
+</p>
+
+<p>
+取决于AOF日志sync属性的配置，如果不要求性能，在每条写指令时都sync一下磁盘，就不会丢失数据。
+但是在高性能的要求下每次都sync是不现实的，一般都使用定时sync，比如1s1次，这个时候最多就会丢失1s的数据
+</p></li>
+
+<li><p>
+对方追问RDB的原理是什么？
+</p>
+
+<p>
+你给出两个词汇就可以了，fork和cow。fork是指redis通过创建子进程来进行RDB操作，cow指的是copy on write，
+子进程创建后，父子进程共享数据段，父进程继续提供读写服务，写脏的页面数据会逐渐和子进程分离开来。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgc1e08f4" class="outline-3">
+<h3 id="orgc1e08f4"><span class="done DONE">DONE</span> Pipeline有什么好处，为什么要用pipeline？</h3>
+<div class="outline-text-3" id="text-orgc1e08f4">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:56]</span></span>
+</p>
+
+<p>
+可以将多次IO往返的时间缩减为一次，前提是pipeline执行的指令之间没有因果相关性。
+使用redis-benchmark进行压测的时候可以发现影响redis的QPS峰值的一个重要因素是pipeline批次指令的数目。
+</p>
+
+<p>
+从另一个方面来说，将多个不相关的命令使用一次 socket write 操作，也避免了操作系统在 user mode 和 kernel mode 的开销
+</p>
+</div>
+</div>
+<div id="outline-container-orgb4ca21f" class="outline-3">
+<h3 id="orgb4ca21f"><span class="todo TODO">TODO</span> Redis的同步机制了解么？</h3>
+<div class="outline-text-3" id="text-orgb4ca21f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:57]</span></span>
+</p>
+
+<p>
+Redis可以使用主从同步，从从同步。第一次同步时，主节点做一次bgsave，并同时将后续修改操作记录到内存buffer，
+待完成后将RDB文件全量同步到复制节点，复制节点接受完成后将RDB镜像加载到内存。
+加载完成后，再通知主节点将期间修改的操作记录同步到复制节点进行重放就完成了同步过程。后续的增量数据通过AOF日志同步即可，有点类似数据库的binlog。
+</p>
+</div>
+</div>
+<div id="outline-container-org8c2813e" class="outline-3">
+<h3 id="org8c2813e"><span class="todo TODO">TODO</span> 是否使用过Redis集群，集群的高可用怎么保证，集群的原理是什么？</h3>
+<div class="outline-text-3" id="text-org8c2813e">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 16:58]</span></span>
+</p>
+
+<p>
+Redis Sentinal 着眼于高可用，在master宕机时会自动将slave提升为master，继续提供服务。
+</p>
+
+<p>
+Redis Cluster 着眼于扩展性，在单个redis内存不足时，使用Cluster进行分片存储。
+</p>
+</div>
+</div>
+<div id="outline-container-org267a9f5" class="outline-3">
+<h3 id="org267a9f5">缓存与数据库双写一致&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org267a9f5">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 17:10]</span></span>
+</p>
+
+<p>
+<a href="https://github.com/doocs/advanced-java">https://github.com/doocs/advanced-java</a>
+</p>
+</div>
+
+<div id="outline-container-org43ca331" class="outline-4">
+<h4 id="org43ca331">读操作流程</h4>
+<div class="outline-text-4" id="text-org43ca331">
+<ol class="org-ol">
+<li>如果我们的数据在缓存里边有，那么就直接取缓存的。</li>
+<li>如果缓存里没有我们想要的数据，我们会先去查询数据库，然后将数据库查出来的数据写到缓存中。</li>
+<li>最后将数据返回给请求</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgbc1546e" class="outline-4">
+<h4 id="orgbc1546e">更新操作</h4>
+<div class="outline-text-4" id="text-orgbc1546e">
+<p>
+如果仅仅查询的话，缓存的数据和数据库的数据是没问题的。但是，当我们要更新时候呢？各种情况很可能就造成数据库和缓存的数据不一致了。
+</p>
+
+<p>
+不直接更新缓存，而是直接删除缓存，下次读 miss 会自动写缓存
+</p>
+</div>
+</div>
+
+<div id="outline-container-org159ab14" class="outline-4">
+<h4 id="org159ab14">两种策略</h4>
+<div class="outline-text-4" id="text-org159ab14">
+<ol class="org-ol">
+<li><p>
+先删除缓存，再更新数据库
+</p>
+
+<p>
+在高并发下表现不如意，在原子性被破坏时表现优异
+</p></li>
+
+<li><p>
+先更新数据库，再删除缓存(Cache Aside Pattern设计模式)
+</p>
+
+<p>
+在高并发下表现优异，在原子性被破坏时表现不如意
+</p></li>
+</ol>
+</div>
+
+<ul class="org-ul">
+<li><a id="org6e5f4fa"></a>先删除缓存，再更新数据库 (原子性）<br />
+<div class="outline-text-5" id="text-org6e5f4fa">
+<p>
+1.正常情况是这样的：
+</p>
+
+<p>
+先删除缓存，成功；
+再更新数据库，也成功；
+</p>
+
+<p>
+2.如果原子性被破坏了：
+</p>
+
+<p>
+第一步成功(删除缓存)，第二步失败(更新数据库)，数据库和缓存的数据还是一致的。
+如果第一步(删除缓存)就失败了，我们可以直接返回错误(Exception)，数据库和缓存的数据还是一致的。
+</p>
+
+<p>
+3.看起来是很美好，但是我们在并发场景下分析一下，就知道还是有问题的了：
+</p>
+
+<p>
+线程A删除了缓存
+线程B查询，发现缓存已不存在
+线程B去数据库查询得到旧值
+线程B将旧值写入缓存
+线程A将新值写入数据库
+</p>
+
+<ol class="org-ol">
+<li>并发下解决数据库与缓存不一致的思路：</li>
+</ol>
+
+<p>
+将删除缓存、修改数据库、读取缓存等的操作积压到队列里边，实现串行化。
+</p>
+</div>
+</li>
+
+<li><a id="orgeff614d"></a>先更新数据库，再删除缓存(原子操作）<br />
+<div class="outline-text-5" id="text-orgeff614d">
+<ol class="org-ol">
+<li><p>
+正常的情况是这样的：
+</p>
+
+<p>
+先操作数据库，成功；
+再删除缓存，也成功；
+</p></li>
+
+<li>如果原子性被破坏了：</li>
+
+<li>第一步成功(操作数据库)，第二步失败(删除缓存)，会导致数据库里是新数据，而缓存里是旧数据。</li>
+<li>如果第一步(操作数据库)就失败了，我们可以直接返回错误(Exception)，不会出现数据不一致。</li>
+
+<li>如果在高并发的场景下，出现数据库与缓存数据不一致的概率特别低，也不是没有：</li>
+</ol>
+
+<p>
+缓存刚好失效
+线程A查询数据库，得一个旧值
+线程B将新值写入数据库
+线程B删除缓存
+线程A将查到的旧值写入缓存
+</p>
+
+<ol class="org-ol">
+<li>删除缓存失败的解决思路：</li>
+</ol>
+
+<p>
+将需要删除的key发送到消息队列中
+自己消费消息，获得需要删除的key
+不断重试删除操作，直到成功
+</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgae10777" class="outline-3">
+<h3 id="orgae10777">zinterstore&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orgae10777">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 08:36]</span></span>
+</p>
+
+<p>
+zinterstore dest numkeys key&#x2026; weights num&#x2026;  aggregate [max | sum | min]
+用来求多个集合的交集，并将结果写进新的 dest key，weights 参数 和 aggregate 参数分别影响了相同的 key 应该如何计算 score
+</p>
+
+<p>
+example:
+ZINTERSTORE out 2 zset1 zset2 WEIGHTS 2 3 AGGREGATE SUM
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: melp</p>
+<p class="date">Created: 2020-04-05 日 18:23</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+</div>
+</body>
+</html>
