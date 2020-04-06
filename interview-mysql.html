@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-05 日 18:23 -->
+<!-- 2020-04-06 一 16:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -254,6 +254,15 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org29118f8">Notes</a>
 <ul>
+<li><a href="#orgfce6cbc">Index Strategies</a>
+<ul>
+<li><a href="#orga7e18b5">Isolating the Column&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org3cb1216">Index Selectivity&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org4e9c40d">Mysql Explain Command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org218dfca">Multicolumn Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgd29f482">Clustered Indexes (innodb B+ tree index)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
 <li><a href="#orgd97c84d">MySQL transpose op table&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orgc59cd78">not in vs not existed difference&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org892c0a0">fetch top n rows&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
@@ -262,6 +271,11 @@ for the JavaScript code in this tag.
 <li><a href="#orgcf33542">insert into syntax&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orge69a010">update statements&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org5002616">一些具体的查询问题&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org8820501">Hash index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org0186085">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orge6b491a">MySQL index notion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org337d456">B+ tree index limits&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orga68e3e5">full-text index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
 </li>
 </ul>
@@ -271,6 +285,132 @@ for the JavaScript code in this tag.
 <div id="outline-container-org29118f8" class="outline-2">
 <h2 id="org29118f8">Notes</h2>
 <div class="outline-text-2" id="text-org29118f8">
+</div>
+<div id="outline-container-orgfce6cbc" class="outline-3">
+<h3 id="orgfce6cbc">Index Strategies</h3>
+<div class="outline-text-3" id="text-orgfce6cbc">
+</div>
+<div id="outline-container-orga7e18b5" class="outline-4">
+<h4 id="orga7e18b5">Isolating the Column&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-orga7e18b5">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 15:14]</span></span>
+</p>
+
+<p>
+“Isolating” the column means it should not be part of an expression or be inside a function in the query.
+</p>
+
+<p>
+如果查询条件语句中的行在表达式中而不是孤立地，那么该行不会使用任何索引.
+</p>
+</div>
+</div>
+<div id="outline-container-org3cb1216" class="outline-4">
+<h4 id="org3cb1216">Index Selectivity&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org3cb1216">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 15:19]</span></span>
+</p>
+
+<p>
+index selectivity 是 index column 中不同的值个数 除以 总行数。
+</p>
+
+<p>
+一个 unique index 的 index selectivity 是 1, index selectivity 越高，匹配时过滤掉的行就越多。
+</p>
+</div>
+</div>
+<div id="outline-container-org4e9c40d" class="outline-4">
+<h4 id="org4e9c40d">Mysql Explain Command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org4e9c40d">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 15:42]</span></span>
+</p>
+
+<p>
+Explain 展示了 sql 语句的执行计划，EXPLAIN works with SELECT, DELETE, INSERT, REPLACE, and UPDATE statements.
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org187bf06"></a>常见字段<br />
+<ul class="org-ul">
+<li><a id="org2508a3a"></a>select<sub>type</sub><br />
+<div class="outline-text-6" id="text-org2508a3a">
+<ul class="org-ul">
+<li>simple: Simple SELECT (not using UNION or subqueries)</li>
+<li>primary: 最外层 SELECT</li>
+<li>union: Second or later SELECT statement in a UNION</li>
+<li>union result: Result of a UNION.</li>
+<li>subquery</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org53c386e"></a>type<br />
+<div class="outline-text-6" id="text-org53c386e">
+<p>
+The join type.
+</p>
+<ul class="org-ul">
+<li>index<sub>merge</sub>: 使用了多个索引，而不是单个索引</li>
+</ul>
+<p>
+<a href="https://dev.mysql.com/doc/refman/5.7/en/explain-output.html#jointype_index_merge">https://dev.mysql.com/doc/refman/5.7/en/explain-output.html#jointype_index_merge</a>     
+<a href="https://dev.mysql.com/doc/refman/5.7/en/index-merge-optimization.html">https://dev.mysql.com/doc/refman/5.7/en/index-merge-optimization.html</a>
+</p>
+
+<p>
+The index merge strategy sometimes works very well, but it’s more common for it to
+actually be an indication of a poorly indexed table。
+</p>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="outline-container-org218dfca" class="outline-4">
+<h4 id="org218dfca">Multicolumn Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org218dfca">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 16:02]</span></span>
+</p>
+
+<p>
+依照查询语句，设计多行索引，而不是多个单行索引。
+多个单行索引也会使用索引，但是是使用 index<sub>merge</sub>。
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="orgb2b5570"></a>Choosing a Good Column Order (B+ tree index)<br />
+<div class="outline-text-6" id="text-orgb2b5570">
+<ol class="org-ol">
+<li>place the most selective columns first in the index。</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-orgd29f482" class="outline-4">
+<h4 id="orgd29f482">Clustered Indexes (innodb B+ tree index)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-orgd29f482">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 16:16]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>B+ tree 中叶子节点存储在整个行，内部节点只存储了被索引的行（indexed column)</li>
+<li>再 innodb 中，表实际上就是存储在 B+ tree 中，有一个主键作为索引，该索引要么是显式的要么是隐式的。
+如此以来，在 innodb 中插入数据的速度依赖于数据插入的顺序是否是主键顺序。</li>
+
+<li>Secondary (nonclustered index) indexes 中叶子节点并不保存完整的行数据，而是行主键值。</li>
+</ol>
+</div>
+</div>
 </div>
 <div id="outline-container-orgd97c84d" class="outline-3">
 <h3 id="orgd97c84d">MySQL transpose op table&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
@@ -484,11 +624,99 @@ not depart<sub>id</sub>, use depart<sub>name</sub>
 </ol>
 </div>
 </div>
+
+
+<div id="outline-container-org8820501" class="outline-3">
+<h3 id="org8820501">Hash index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org8820501">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 20:58]</span></span>
+</p>
+
+<p>
+使用一个 hash table 表示 index, 其中 key 是 column value 的 hash 值， value 是一个指针，指向具体的行。
+</p>
+
+<ol class="org-ol">
+<li><p>
+如何手动模拟 hash index 使用 B+ tree index
+</p>
+
+<p>
+假如现在我们要为 column A 添加索引，那么可以新添加一个 column A<sub>hash</sub>，然后将 A<sub>hash</sub> 也作为一个 key。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org0186085" class="outline-3">
+<h3 id="org0186085">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org0186085">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 14:45]</span></span>
+</p>
+
+<p>
+这是一个 prefix command
+</p>
+
+<p>
+当其他 Dockerfile command 被 prefix ONBUILD，那么该 command 不会在当前 Dockerfile 被 build 时运行，
+而是以该 Dockerfile 构建的镜像为基础的孩子 Dockerfile 被 build 时在运行。
+</p>
+</div>
+</div>
+<div id="outline-container-orge6b491a" class="outline-3">
+<h3 id="orge6b491a">MySQL index notion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orge6b491a">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 20:33]</span></span>
+</p>
+
+<p>
+In a high level， mysql index like a book index by which you can quickly find the page number of a specified theme.
+</p>
+
+<p>
+At mysql, a index is a data structure at disk, every index has some keys, when you want to find which rows has specified value for
+these keys，by this index, we do not need to scan all table.
+</p>
+
+<ol class="org-ol">
+<li>Indexes reduce the amount of data the server has to examine.</li>
+<li>Indexes help the server avoid sorting and temporary tables.</li>
+<li>Indexes turn random I/O into sequential I/O</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org337d456" class="outline-3">
+<h3 id="org337d456">B+ tree index limits&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org337d456">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 20:53]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>索引 keys 的顺序是重要的，因此在写 query 语句时 columns 的顺序必须与新建索引时一致。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orga68e3e5" class="outline-3">
+<h3 id="orga68e3e5">full-text index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orga68e3e5">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 21:14]</span></span>
+</p>
+
+<p>
+full-text index is for MATCH AGAINST operations.
+</p>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-05 日 18:23</p>
+<p class="date">Created: 2020-04-06 一 16:31</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-05 日 18:23 -->
+<!-- 2020-04-06 一 16:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -193,6 +193,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -255,9 +261,18 @@ for the JavaScript code in this tag.
 <li><a href="#org2344c69">基本过程</a></li>
 </ul>
 </li>
+<li><a href="#org844080d">RESTFull API&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org9ba4ede">REST</a></li>
+<li><a href="#orgbe97775">Guides Principles of REST</a></li>
+<li><a href="#org6b9678d">Uniform Interface</a></li>
+<li><a href="#orga71bfd5">Applied to Web services</a></li>
+<li><a href="#orga957352">Resources</a></li>
 </ul>
 </li>
-<li><a href="#org007cc07">Resources</a></li>
+</ul>
+</li>
+<li><a href="#orga13e58e">Resources</a></li>
 </ul>
 </div>
 </div>
@@ -296,14 +311,179 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
+<div id="outline-container-org844080d" class="outline-3">
+<h3 id="org844080d">RESTFull API&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org844080d">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 08:39]</span></span>
+</p>
+
+<p>
+<a href="https://restfulapi.net/">https://restfulapi.net/</a>
+</p>
 </div>
-<div id="outline-container-org007cc07" class="outline-2">
-<h2 id="org007cc07">Resources</h2>
+
+<div id="outline-container-org9ba4ede" class="outline-4">
+<h4 id="org9ba4ede">REST</h4>
+<div class="outline-text-4" id="text-org9ba4ede">
+<p>
+REST 是 REpresentational State Transfer 的缩写，是一种分布式系统的架构风格。
+REST determines how the API looks like.
+如果一个系统的接口是 RESTFull 的，那么它必须满足以下原则：
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbe97775" class="outline-4">
+<h4 id="orgbe97775">Guides Principles of REST</h4>
+<div class="outline-text-4" id="text-orgbe97775">
+<ul class="org-ul">
+<li><p>
+Client-server 架构，前后端分离。
+</p>
+
+<p>
+这样做的好处是，提升了前端用户接口的平台多样性，提升 server 端的可伸缩型
+</p></li>
+
+<li><p>
+Statelss
+</p>
+
+<p>
+每个请求都包含了能让服务端理解该请求的所有信息。服务端不会存储任何请求上下文。session 状态整个都存储在客户端？
+</p></li>
+
+<li><p>
+Cacheable
+</p>
+
+<p>
+Server 端响应所包含的数据被显式或者隐式标记成可缓存或者不可缓存。对于可缓存的数据，客户端 cache 可以直接返回数据而不需要新的请求。
+</p></li>
+
+<li>Uniform interface</li>
+<li>Layered system</li>
+
+<li><p>
+Code on demand(optional)
+</p>
+
+<p>
+REST allows client functionality to be extended by downloading and executing code in the form of applets or scripts.
+This simplifies clients by reducing the number of features required to be pre-implemented.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6b9678d" class="outline-4">
+<h4 id="org6b9678d">Uniform Interface</h4>
+<div class="outline-text-4" id="text-org6b9678d">
+<ul class="org-ul">
+<li>Resource identification in requests</li>
+</ul>
+
+<p>
+Individual resources are identified in requests, 
+for example using URIs in RESTful Web services. 
+The resources themselves are conceptually separate 
+from the representations that are returned to the client.
+For example, the server could send data from its database as HTML, 
+XML or as JSON—none of which are the server's internal representation.
+</p>
+
+<ul class="org-ul">
+<li>Resource manipulation through representations</li>
+</ul>
+
+<p>
+When a client holds a representation of a resource, including any metadata attached, it has enough information to modify or delete the resource.
+</p>
+
+<ul class="org-ul">
+<li>Self-descriptive messages</li>
+</ul>
+
+<p>
+Each message includes enough information to describe how to process the message.
+For example, which parser to invoke can be specified by a media type.[3]
+</p>
+
+<ul class="org-ul">
+<li>Hypermedia as the engine of application state (HATEOAS)</li>
+</ul>
+
+<p>
+Having accessed an initial URI for the REST application—analogous to 
+a human Web user accessing the home page of a website—a REST client 
+should then be able to use server-provided links dynamically to discover
+all the available actions and resources it needs. As access proceeds, 
+the server responds with text that includes hyperlinks to other actions
+that are currently available. There is no need for the client to be 
+hard-coded with information regarding the structure or dynamics of the application.[13]
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga71bfd5" class="outline-4">
+<h4 id="orga71bfd5">Applied to Web services</h4>
+<div class="outline-text-4" id="text-orga71bfd5">
+<p>
+Web service APIs that adhere to the REST architectural constraints are called RESTful APIs.[14]
+HTTP-based RESTful APIs are defined with the following aspects:[15]
+</p>
+
+<ul class="org-ul">
+<li>a base URI, such as <a href="http://api.example.com/collection/">http://api.example.com/collection/</a>;</li>
+<li>standard HTTP methods (e.g., GET, POST, PUT, PATCH and DELETE);</li>
+<li>a media type that defines state transition data elements 
+(e.g., Atom, microformats, application/vnd.collection+json,[15]:91–99 etc.).
+The current representation tells the client how to compose requests 
+for transitions to all the next available application states.
+This could be as simple as a URI or as complex as a Java applet.[16]</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga957352" class="outline-4">
+<h4 id="orga957352">Resources</h4>
+<div class="outline-text-4" id="text-orga957352">
+<p>
+在 REST 中，resource 是对信息的关键抽象。Any information that can be named can be a resource。
+</p>
+
+<p>
+REST uses a <b>resource identifier</b> to identify the particular resource involved in an interaction between components.
+</p>
+
+<p>
+The state of the resource at any particular timestamp is known as resource representation.
+A representation consists of data, metadata describing the data and hypermedia links which 
+can help the clients in transition to the next desired state.
+</p>
+
+<p>
+<b>A truly RESTful API looks like hypertext</b>.
+</p>
+
+<p>
+Further, resource representations shall be self-descriptive: the client does not 
+need to know if a resource is employee or device. 
+It should act on the basis of media-type associated with the resource. So in practice,
+you will end up creating lots of custom media-types – normally one media-type associated with one resource.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga13e58e" class="outline-2">
+<h2 id="orga13e58e">Resources</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-05 日 18:23</p>
+<p class="date">Created: 2020-04-06 一 16:30</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
