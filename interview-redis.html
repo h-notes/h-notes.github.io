@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-06 一 16:30 -->
+<!-- 2020-04-07 二 17:10 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -274,6 +274,11 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgd0fb8de">basic</a></li>
 <li><a href="#org6330d0a">So how do you do it in Redis?</a></li>
+</ul>
+</li>
+<li><a href="#orge7dea9f">redis backup for crash&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org6a2f552">persistence to disk</a></li>
 </ul>
 </li>
 </ul>
@@ -697,11 +702,63 @@ from all other connections - if anyone else changes the key, the transaction wil
 </div>
 </div>
 </div>
+<div id="outline-container-orge7dea9f" class="outline-3">
+<h3 id="orge7dea9f">redis backup for crash&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-orge7dea9f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-07 二 11:50]</span></span>
+</p>
+</div>
+
+<div id="outline-container-org6a2f552" class="outline-4">
+<h4 id="org6a2f552">persistence to disk</h4>
+<div class="outline-text-4" id="text-org6a2f552">
+</div>
+<ul class="org-ul">
+<li><a id="orge86e8b2"></a>RDB<br />
+<div class="outline-text-5" id="text-orge86e8b2">
+<p>
+将内存快照全部持久化到磁盘，可以通过 <i>save 100 1</i> config option 来配置保存间隔以及最少的 key changes 数。
+也可以使用 BGSAVE 命令手动备份。
+</p>
+
+<p>
+保存过程，fork 一个孩子进程，在孩子进程中进行保存操作。
+</p>
+
+<p>
+缺点是，如果 redis 在最后一次备份之前 crash，那么将丢失最后一次需要备份的数据。另外，如果内存中数据量比较多，那么 fork 速度会比较慢。
+</p>
+</div>
+</li>
+
+<li><a id="org4c8629d"></a>AOF<br />
+<div class="outline-text-5" id="text-org4c8629d">
+<p>
+append only file
+</p>
+
+<p>
+类似于 binlog，使用日志文件记录数据变化的历史操作命令，恢复数据时只需要重放整个日志文件就可以了。
+</p>
+
+<p>
+缺点是，日志文件越来越大，会导致 redis 重启太慢。
+解决办法，使用 BGREWRITEAOF，它将尽可能的重写日志文件，去除冗余的命令。其工作原理与 BGSAVE 相似，也是 fork 出子进程，在子进程中重写。
+也可以通过配置项来让 redis 自动重写，auto-aof-rewrite-percentage and auto-aof-rewrite-min-size。
+Using the example values of auto-aof-rewritepercentage 100 and auto-aof-rewrite-min-size 64mb:
+当日志文件至少大于上次完成 rewirte 的文件大小的 100%，并且日志文件至少有 64mb。
+</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-06 一 16:30</p>
+<p class="date">Created: 2020-04-07 二 17:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
