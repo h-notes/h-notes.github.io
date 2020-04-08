@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-07 二 17:14 -->
+<!-- 2020-04-08 三 11:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -248,6 +248,27 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgfa891b5"><span class="todo TODO">TODO</span> 有关 海量数据处理 面试题目</a></li>
 <li><a href="#org1c6f737"><span class="todo TODO">TODO</span> 数据卷 Volume 如何使用</a></li>
+<li><a href="#orgd6fc132">Redis Replication&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgfcc788b">Config</a>
+<ul>
+<li><a href="#orgb5ae008">Master side</a></li>
+<li><a href="#orge2ef452">Slave side</a></li>
+</ul>
+</li>
+<li><a href="#org046b198">Redis replication startup process</a>
+<ul>
+<li><a href="#orgb5f6794">simple version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3654e93">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgfec468f">目标</a></li>
+<li><a href="#org3c7c079">思路</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -276,10 +297,114 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
+<div id="outline-container-orgd6fc132" class="outline-2">
+<h2 id="orgd6fc132">Redis Replication&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h2>
+<div class="outline-text-2" id="text-orgd6fc132">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 08:28]</span></span>
+</p>
+
+<p>
+可用用来实现读写分离，主从备份。
+</p>
+</div>
+
+<div id="outline-container-orgfcc788b" class="outline-3">
+<h3 id="orgfcc788b">Config</h3>
+<div class="outline-text-3" id="text-orgfcc788b">
+</div>
+<div id="outline-container-orgb5ae008" class="outline-4">
+<h4 id="orgb5ae008">Master side</h4>
+<div class="outline-text-4" id="text-orgb5ae008">
+<p>
+确保 <b>dir</b> 和 <b>dbfilename</b> 指向的路径和文件是对 redis process 可以写的。writable.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge2ef452" class="outline-4">
+<h4 id="orge2ef452">Slave side</h4>
+<div class="outline-text-4" id="text-orge2ef452">
+<p>
+slaveof host port 指向 master 节点 redis 进程
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org046b198" class="outline-3">
+<h3 id="org046b198">Redis replication startup process</h3>
+<div class="outline-text-3" id="text-org046b198">
+</div>
+<div id="outline-container-orgb5f6794" class="outline-4">
+<h4 id="orgb5f6794">simple version</h4>
+<div class="outline-text-4" id="text-orgb5f6794">
+<p>
+master 生成一个快照，并将它发送给 slave
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org3654e93" class="outline-2">
+<h2 id="org3654e93">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h2>
+<div class="outline-text-2" id="text-org3654e93">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 10:50]</span></span>
+</p>
+
+<p>
+Given an array arr of positive integers, consider all binary trees such that:
+</p>
+
+<ul class="org-ul">
+<li>Each node has either 0 or 2 children;</li>
+<li>The values of arr correspond to the values of each leaf in an in-order traversal of the tree. 
+(Recall that a node is a leaf if and only if it has 0 children.)</li>
+<li>The value of each non-leaf node is equal to the product of the largest leaf value in its left and right subtree respectively.</li>
+</ul>
+
+<p>
+Among all possible binary trees considered, return the smallest possible sum of the values of each non-leaf node. 
+It is guaranteed this sum fits into a 32-bit integer.
+</p>
+</div>
+
+<div id="outline-container-orgfec468f" class="outline-3">
+<h3 id="orgfec468f">目标</h3>
+<div class="outline-text-3" id="text-orgfec468f">
+<p>
+目标：已知中序叶子节点值数组 arr，在上述构造完整树的步骤限制下，求 minimum cost tree value。这里简写成 mctv。
+其中 ctv 是指树中所有内部节点之和。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3c7c079" class="outline-3">
+<h3 id="org3c7c079">思路</h3>
+<div class="outline-text-3" id="text-org3c7c079">
+<p>
+首先手动构造一个树，找出递归关系。
+</p>
+
+<p>
+切分数组，计算切分之后左右两边数组的 mctv，那么切分之前的树组的 origin-mctv = left-mctv + right-mctv + max(left-arr) * max(right-arr)。
+</p>
+
+<p>
+考虑所有的切分情况，返回最小的 ctv。
+</p>
+
+<p>
+边界情况：当 array 长度为 1 时，ctv 等于 0。
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-07 二 17:14</p>
+<p class="date">Created: 2020-04-08 三 11:39</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
