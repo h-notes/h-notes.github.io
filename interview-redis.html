@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-08 三 11:39 -->
+<!-- 2020-04-08 三 19:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -273,7 +273,8 @@ for the JavaScript code in this tag.
 <li><a href="#org239eab2">basic redis transaction&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
 <ul>
 <li><a href="#orgd0fb8de">basic</a></li>
-<li><a href="#org6330d0a">So how do you do it in Redis?</a></li>
+<li><a href="#org2d3230d">watch and unwatch</a></li>
+<li><a href="#org307140c">example</a></li>
 </ul>
 </li>
 <li><a href="#orge7dea9f">redis backup for crash&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
@@ -665,40 +666,62 @@ in a SQL database you might do the following (pseudo-code - illustrative only):
 </div>
 </div>
 </div>
-
-<div id="outline-container-org6330d0a" class="outline-4">
-<h4 id="org6330d0a">So how do you do it in Redis?</h4>
-<div class="outline-text-4" id="text-org6330d0a">
+<div id="outline-container-org2d3230d" class="outline-4">
+<h4 id="org2d3230d">watch and unwatch</h4>
+<div class="outline-text-4" id="text-org2d3230d">
 <p>
-This simply isn’t possible in redis transactions: once the transaction 
-is open you can’t fetch data - your operations are queued.
-Fortunately, there are two other commands that help us: WATCH and UNWATCH.
+可以使用 WATCH 来监控在 MULTI 和 EXEC 之间涉及到的 keys，如果，被 multi 和 exec 包含的命令在执行期间 keys 的值发生了变化，那么相应的客户端
+会收到一个 watcherror，此时 客户端可以选择 retry 整个指令。
 </p>
+</div>
+</div>
 
-
+<div id="outline-container-org307140c" class="outline-4">
+<h4 id="org307140c">example</h4>
+<div class="outline-text-4" id="text-org307140c">
 <p>
-WATCH {key} tells Redis that we are interested in the specified key for the purposes of the transaction. 
-Redis will automatically keep track of this key, and any changes will essentially doom our transaction to rollback.
+设想有这样一个场景，一款网络游戏，有市场 (marketplace)，可以让双方自由交易，实现购买物品。
+这里需要注意的点在与：需要实现 转账，市场更新，买方库存更新 这几个操作的事物性，
+确保在交易发生开始到结束，市场没有更新并且买方 money 没有发生变化，以及整个交易要么成功要么失败。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sql">WATCH <span style="color: #4f97d7;">{</span>custKey<span style="color: #4f97d7;">}</span>
-HEXISTS <span style="color: #4f97d7;">{</span>custKey<span style="color: #4f97d7;">}</span> "UniqueId"
-<span style="color: #4f97d7;">(</span><span style="color: #4f97d7; font-weight: bold;">check</span> the reply, <span style="color: #4f97d7; font-weight: bold;">then</span> either:<span style="color: #4f97d7;">)</span>
-MULTI
-HSET <span style="color: #4f97d7;">{</span>custKey<span style="color: #4f97d7;">}</span> "UniqueId" <span style="color: #4f97d7;">{</span>newId<span style="color: #4f97d7;">}</span>
-<span style="color: #4f97d7; font-weight: bold;">EXEC</span>
-<span style="color: #4f97d7;">(</span><span style="color: #4f97d7; font-weight: bold;">or</span>, if we find there was already an <span style="color: #4f97d7; font-weight: bold;">unique</span>-id:<span style="color: #4f97d7;">)</span>
-UNWATCH
+<pre class="src src-go"><span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">PurchaseItem</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">buyerid</span>, <span style="color: #7590db;">itemid</span>, <span style="color: #7590db;">sellerid</span> <span style="color: #ce537a; font-weight: bold;">string</span>, <span style="color: #7590db;">lprice</span> <span style="color: #ce537a; font-weight: bold;">int64</span><span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">bool</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #7590db;">buyer</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"users:%s"</span>, buyerid<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">seller</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"users:%s"</span>, sellerid<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">item</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"%s.%s"</span>, itemid, sellerid<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">inventory</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"inventory:%s"</span>, buyerid<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">end</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #bc6ec5;">()</span> + <span style="color: #a45bad;">10</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">for</span> time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #bc6ec5;">()</span> &lt; end <span style="color: #bc6ec5;">{</span>
+    <span style="color: #7590db;">err</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">Watch</span><span style="color: #2d9574;">(</span><span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #67b11d;">(</span><span style="color: #7590db;">tx</span> *<span style="color: #ce537a; font-weight: bold;">redis.Tx</span><span style="color: #67b11d;">)</span> <span style="color: #ce537a; font-weight: bold;">error</span> <span style="color: #67b11d;">{</span>
+      <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">err</span> := tx.<span style="color: #bc6ec5; font-weight: bold;">TxPipelined</span><span style="color: #b1951d;">(</span><span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">pipeliner</span> <span style="color: #ce537a; font-weight: bold;">redis.Pipeliner</span><span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">error</span> <span style="color: #4f97d7;">{</span>
+        <span style="color: #7590db;">price</span> := <span style="color: #bc6ec5; font-weight: bold;">int64</span><span style="color: #bc6ec5;">(</span>pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZScore</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"market:"</span>, item<span style="color: #2d9574;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #2d9574;">()</span><span style="color: #bc6ec5;">)</span>
+        <span style="color: #7590db;">funds</span>, <span style="color: #7590db;">_</span> := tx.<span style="color: #bc6ec5; font-weight: bold;">HGet</span><span style="color: #bc6ec5;">(</span>buyer, <span style="color: #2d9574;">"funds"</span><span style="color: #bc6ec5;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Int64</span><span style="color: #bc6ec5;">()</span>
+        <span style="color: #4f97d7; font-weight: bold;">if</span> price != lprice || price &gt; funds <span style="color: #bc6ec5;">{</span>
+          tx.<span style="color: #bc6ec5; font-weight: bold;">Unwatch</span><span style="color: #2d9574;">()</span>
+        <span style="color: #bc6ec5;">}</span>
+
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">HIncrBy</span><span style="color: #bc6ec5;">(</span>seller, <span style="color: #2d9574;">"funds"</span>, price<span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">HIncrBy</span><span style="color: #bc6ec5;">(</span>buyer, <span style="color: #2d9574;">"funds"</span>, -price<span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">SAdd</span><span style="color: #bc6ec5;">(</span>inventory, itemid<span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZRem</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"market:"</span>, item<span style="color: #bc6ec5;">)</span>
+        <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">nil</span>
+      <span style="color: #4f97d7;">}</span><span style="color: #b1951d;">)</span>; err != <span style="color: #a45bad;">nil</span> <span style="color: #b1951d;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">return</span> err
+      <span style="color: #b1951d;">}</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">nil</span>
+    <span style="color: #67b11d;">}</span>, <span style="color: #2d9574;">"market:"</span>, buyer<span style="color: #2d9574;">)</span>
+    <span style="color: #4f97d7; font-weight: bold;">if</span> err != <span style="color: #a45bad;">nil</span> <span style="color: #2d9574;">{</span>
+      log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #67b11d;">(</span>err<span style="color: #67b11d;">)</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">false</span>
+    <span style="color: #2d9574;">}</span>
+    <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">true</span>
+  <span style="color: #bc6ec5;">}</span>
+  <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">false</span>
+<span style="color: #4f97d7;">}</span>
 </pre>
 </div>
-
-<p>
-This might look odd - having a MULTI/EXEC that only spans a single operation - but 
-the important thing is that we are now also tracking changes to {custKey}
-from all other connections - if anyone else changes the key, the transaction will be aborted.
-<span class="timestamp-wrapper"><span class="timestamp">[2020-04-06 一 15:13]</span></span>
-</p>
 </div>
 </div>
 </div>
@@ -758,7 +781,7 @@ Using the example values of auto-aof-rewritepercentage 100 and auto-aof-rewrite-
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-08 三 11:39</p>
+<p class="date">Created: 2020-04-08 三 19:12</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
