@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-08 三 19:12 -->
+<!-- 2020-04-08 三 21:25 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -263,6 +263,18 @@ for the JavaScript code in this tag.
 <li><a href="#org0817751">Dockerfile WORKDIR command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org084f705">Docker build image 构建上下文的概念&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org842b5c9">Dockerfile USER command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org3113e9f">docker network&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orgd192e9d">port mapping</a></li>
+<li><a href="#org5b9e9f5">容器互联</a></li>
+</ul>
+</li>
+<li><a href="#org79419d1">数据卷 Volume 如何使用</a>
+<ul>
+<li><a href="#orge258290">数据卷</a></li>
+<li><a href="#org8c63bdd">挂载主机目录</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -424,11 +436,121 @@ docker build -t imagename:tag .
 </p>
 </div>
 </div>
+<div id="outline-container-org3113e9f" class="outline-3">
+<h3 id="org3113e9f">docker network&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org3113e9f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 21:14]</span></span>
+</p>
+</div>
+
+<div id="outline-container-orgd192e9d" class="outline-4">
+<h4 id="orgd192e9d">port mapping</h4>
+<div class="outline-text-4" id="text-orgd192e9d">
+<p>
+使用 hostPort:containerPort 格式本地的 5000 端口映射到容器的 5000 端口，可以执行
+</p>
+
+<p>
+docker run -d -p 5000:5000 training/webapp python app.py
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5b9e9f5" class="outline-4">
+<h4 id="org5b9e9f5">容器互联</h4>
+<div class="outline-text-4" id="text-org5b9e9f5">
+<ol class="org-ol">
+<li>新建网络
+docker network create -d bridge my-net</li>
+
+<li>连接容器
+docker run -it &#x2013;rm &#x2013;name busybox1 &#x2013;network my-net busybox sh
+docker run -it &#x2013;rm &#x2013;name busybox2 &#x2013;network my-net busybox sh</li>
+</ol>
+
+<p>
+下面通过 ping 来证明 busybox1 容器和 busybox2 容器建立了互联关系。
+</p>
+<blockquote>
+<p>
+/ # ping busybox1
+PING busybox1 (172.19.0.2): 56 data bytes
+64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.064 ms
+64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.143 ms
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-org79419d1" class="outline-3">
+<h3 id="org79419d1">数据卷 Volume 如何使用</h3>
+<div class="outline-text-3" id="text-org79419d1">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-04 六 17:25]</span></span>
+</p>
+
+<p>
+通常容器的存储层会随着容器的消亡和消失，因此需要通过 Volume 将容器封装的应用产生的需要持久化的数据存储在 Host 或者其他网络文件服务上。
+</p>
+</div>
+
+<div id="outline-container-orge258290" class="outline-4">
+<h4 id="orge258290">数据卷</h4>
+<div class="outline-text-4" id="text-orge258290">
+<ol class="org-ol">
+<li>创建数据卷</li>
+</ol>
+<p>
+docker volume create my-vol
+</p>
+
+<ol class="org-ol">
+<li>下面创建一个名为 web 的容器，并加载一个 数据卷 到容器的 /webapp 目录。</li>
+</ol>
+<blockquote>
+<p>
+$ docker run -d -P \
+   &#x2013;name web \
+</p>
+
+<p>
+&#x2013;mount source=my-vol,target=/webapp \
+training/webapp \
+python app.py
+</p>
+</blockquote>
+
+<p>
+如果需要在删除容器的同时移除数据卷, 可以在删除容器的时候使用 docker rm -v 这个命令
+无主的数据卷可能会占据很多空间，要清理请使用以下命令: docker volume prune
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8c63bdd" class="outline-4">
+<h4 id="org8c63bdd">挂载主机目录</h4>
+<div class="outline-text-4" id="text-org8c63bdd">
+<blockquote>
+<p>
+$ docker run -d -P \
+ &#x2013;name web \
+</p>
+
+<p>
+&#x2013;mount type=bind,source=/src/webapp,target=/opt/webapp \
+training/webapp \
+python app.py
+</p>
+</blockquote>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-08 三 19:12</p>
+<p class="date">Created: 2020-04-08 三 21:25</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

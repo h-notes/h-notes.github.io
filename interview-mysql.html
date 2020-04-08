@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-08 三 19:12 -->
+<!-- 2020-04-08 三 21:25 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -261,6 +261,7 @@ for the JavaScript code in this tag.
 <li><a href="#org4e9c40d">Mysql Explain Command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org218dfca">Multicolumn Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orgd29f482">Clustered Indexes (innodb B+ tree index)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org9c6ce17">covering index.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
 </li>
 <li><a href="#orgd97c84d">MySQL transpose op table&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
@@ -408,6 +409,19 @@ actually be an indication of a poorly indexed table。
 如此以来，在 innodb 中插入数据的速度依赖于数据插入的顺序是否是主键顺序。</li>
 
 <li>Secondary (nonclustered index) indexes 中叶子节点并不保存完整的行数据，而是行主键值。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9c6ce17" class="outline-4">
+<h4 id="org9c6ce17">covering index.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org9c6ce17">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 20:35]</span></span>
+</p>
+
+<ol class="org-ol">
+<li>在 B+ tree index 中，当索引包含了满足一条查询语句的所有数据，那么这个索引叫做 covering index， 不需要再去通过主键索引取得相应的行。</li>
+<li>当你发起一个查询，它被一个 index 覆盖，那么在 EXPLAIN 的 Extra column 会看到 ”Using index".</li>
 </ol>
 </div>
 </div>
@@ -716,7 +730,7 @@ full-text index is for MATCH AGAINST operations.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-08 三 19:12</p>
+<p class="date">Created: 2020-04-08 三 21:25</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
