@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-08 三 21:25 -->
+<!-- 2020-04-09 四 13:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -266,12 +266,12 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgfd5993a">Notes</a>
 <ul>
+<li><a href="#orgc642ae9">Dynamic Programming</a>
+<ul>
 <li><a href="#org25dcf22">prefix/Range sum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org6fb9455">Count Square Submatrices with All Ones&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
-<li><a href="#org054df33">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
-<ul>
-<li><a href="#orgf386ccd">目标</a></li>
-<li><a href="#orgd846b42">思路</a></li>
+<li><a href="#org054df33">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org0525dca">Minimum Falling Path Sum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
 </li>
 </ul>
@@ -362,6 +362,7 @@ fibo recur.
 <h3 id="org145b3ff"><span class="todo TODO">TODO</span> LeetCode DP problems</h3>
 <div class="outline-text-3" id="text-org145b3ff">
 <ul class="org-ul">
+<li>State "DONE"       from "NEXT"       <span class="timestamp-wrapper"><span class="timestamp">[2020-04-09 四 13:20] </span></span> minimum path sum</li>
 <li>State "DONE"       from "TODO"       <span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 11:47] </span></span> minimum cost tree.</li>
 <li>State "DONE"       from "NEXT"       <span class="timestamp-wrapper"><span class="timestamp">[2020-04-07 二 17:08] </span></span> count square submatrices with all ones.</li>
 <li>State "DONE"       from "TODO"       <span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 16:53]</span></span></li>
@@ -370,7 +371,7 @@ fibo recur.
 </ul>
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-04-03 五 08:29]</span></span>
-SCHEDULED: <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-09 四 .+1d&gt;</span></span>
+SCHEDULED: <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-10 五 .+1d&gt;</span></span>
 </p>
 <p>
 :STYLE: habit
@@ -395,9 +396,13 @@ SCHEDULED: <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-0
 <h2 id="orgfd5993a">Notes</h2>
 <div class="outline-text-2" id="text-orgfd5993a">
 </div>
-<div id="outline-container-org25dcf22" class="outline-3">
-<h3 id="org25dcf22">prefix/Range sum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
-<div class="outline-text-3" id="text-org25dcf22">
+<div id="outline-container-orgc642ae9" class="outline-3">
+<h3 id="orgc642ae9">Dynamic Programming</h3>
+<div class="outline-text-3" id="text-orgc642ae9">
+</div>
+<div id="outline-container-org25dcf22" class="outline-4">
+<h4 id="org25dcf22">prefix/Range sum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org25dcf22">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-04-04 六 14:22]</span></span>
 </p>
@@ -757,9 +762,9 @@ ans[i][j] = rangeSum[r2][c2] - rangeSum[r2][c1] - rangeSum[r1][c2] + rangeSum[r1
 </ol>
 </div>
 </div>
-<div id="outline-container-org6fb9455" class="outline-3">
-<h3 id="org6fb9455">Count Square Submatrices with All Ones&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
-<div class="outline-text-3" id="text-org6fb9455">
+<div id="outline-container-org6fb9455" class="outline-4">
+<h4 id="org6fb9455">Count Square Submatrices with All Ones&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org6fb9455">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-04-07 二 16:59]</span></span>
 </p>
@@ -795,9 +800,9 @@ Input: matrix =
 </p>
 </div>
 </div>
-<div id="outline-container-org054df33" class="outline-3">
-<h3 id="org054df33">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
-<div class="outline-text-3" id="text-org054df33">
+<div id="outline-container-org054df33" class="outline-4">
+<h4 id="org054df33">Minimum Cost Tree From Leaf Values&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org054df33">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 10:50]</span></span>
 </p>
@@ -819,19 +824,18 @@ It is guaranteed this sum fits into a 32-bit integer.
 </p>
 </div>
 
-<div id="outline-container-orgf386ccd" class="outline-4">
-<h4 id="orgf386ccd">目标</h4>
-<div class="outline-text-4" id="text-orgf386ccd">
+<ul class="org-ul">
+<li><a id="orgf386ccd"></a>目标<br />
+<div class="outline-text-5" id="text-orgf386ccd">
 <p>
 已知中序叶子节点值数组 arr，在上述构造完整树的步骤限制下，求 minimum cost tree value。这里简写成 mctv。
 其中 ctv 是指树中所有内部节点之和。
 </p>
 </div>
-</div>
+</li>
 
-<div id="outline-container-orgd846b42" class="outline-4">
-<h4 id="orgd846b42">思路</h4>
-<div class="outline-text-4" id="text-orgd846b42">
+<li><a id="orgd846b42"></a>思路<br />
+<div class="outline-text-5" id="text-orgd846b42">
 <p>
 首先手动构造一个树，找出递归关系。
 </p>
@@ -848,13 +852,104 @@ It is guaranteed this sum fits into a 32-bit integer.
 边界情况：当 array 长度为 1 时，ctv 等于 0。
 </p>
 </div>
+</li>
+</ul>
+</div>
+<div id="outline-container-org0525dca" class="outline-4">
+<h4 id="org0525dca">Minimum Falling Path Sum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org0525dca">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-09 四 13:10]</span></span>
+</p>
+
+<p>
+<a href="https://leetcode.com/problems/minimum-falling-path-sum/">source</a> 
+</p>
+</div>
+<ul class="org-ul">
+<li><a id="orgfb991db"></a>description<br />
+<div class="outline-text-5" id="text-orgfb991db">
+<p>
+Given a square array of integers A, we want the minimum sum of a falling path through A.
+</p>
+
+<p>
+A falling path starts at any element in the first row, and chooses one element from each row.
+</p>
+
+<p>
+The next row's choice must be in a column that is different from the previous row's column by at most one.
+</p>
+
+<p>
+Input: [[1,2,3],[4,5,6],[7,8,9]]
+Output: 12
+</p>
+
+<p>
+换句话说，在从上至下的寻路限制下，找到从第一层元素到最后一层元素的最小路径。
+</p>
+</div>
+</li>
+
+<li><a id="orga79d0d2"></a>solution<br />
+<div class="outline-text-5" id="text-orga79d0d2">
+<ol class="org-ol">
+<li>找到到达最后一层每个元素的最小路径，返回其中最小的路径。</li>
+<li><p>
+到达元素 A[i][j] 的最小路径 path[i][j] = A[i][j] + min(path[i-1][j], path[i-1][j-1], path[i-1][j+1])
+</p>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">Solution</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #4f97d7; font-weight: bold;">public</span> <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #bc6ec5; font-weight: bold;">minFallingPathSum</span><span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">[][]</span> <span style="color: #7590db;">A</span><span style="color: #bc6ec5;">)</span> <span style="color: #bc6ec5;">{</span>
+    <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #2d9574;">(</span>A == <span style="color: #a45bad;">null</span> || A.length == <span style="color: #a45bad;">0</span> || A<span style="color: #67b11d;">[</span><span style="color: #a45bad;">0</span><span style="color: #67b11d;">]</span>.length == <span style="color: #a45bad;">0</span><span style="color: #2d9574;">)</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">0</span>;
+    <span style="color: #2d9574;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">res</span> = <span style="color: #a45bad;">Integer</span>.MAX_VALUE;
+      <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">i</span> = A.length - <span style="color: #a45bad;">1</span>;
+      <span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #67b11d;">[][]</span> <span style="color: #7590db;">memo</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #67b11d;">[</span>A.length<span style="color: #67b11d;">][</span>A<span style="color: #b1951d;">[</span><span style="color: #a45bad;">0</span><span style="color: #b1951d;">]</span>.length<span style="color: #67b11d;">]</span>;
+
+      <span style="color: #4f97d7; font-weight: bold;">for</span> <span style="color: #67b11d;">(</span><span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">j</span> = <span style="color: #a45bad;">0</span>; j &lt; <span style="color: #ce537a; font-weight: bold;">A</span><span style="color: #b1951d;">[</span><span style="color: #a45bad;">0</span><span style="color: #b1951d;">]</span>.length; j++<span style="color: #67b11d;">)</span> <span style="color: #67b11d;">{</span>
+        res = Math.min<span style="color: #b1951d;">(</span>res, helper<span style="color: #4f97d7;">(</span>A, i, j, memo<span style="color: #4f97d7;">)</span><span style="color: #b1951d;">)</span>;
+      <span style="color: #67b11d;">}</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> res;
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">private</span> <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #bc6ec5; font-weight: bold;">helper</span><span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">[][]</span> <span style="color: #7590db;">A</span>, <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">i</span>, <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">j</span>, <span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">[][]</span> <span style="color: #7590db;">memo</span><span style="color: #bc6ec5;">)</span> <span style="color: #bc6ec5;">{</span>
+    <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #2d9574;">(</span>memo<span style="color: #67b11d;">[</span>i<span style="color: #67b11d;">][</span>j<span style="color: #67b11d;">]</span> != <span style="color: #a45bad;">0</span><span style="color: #2d9574;">)</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> memo<span style="color: #67b11d;">[</span>i<span style="color: #67b11d;">][</span>j<span style="color: #67b11d;">]</span>;
+    <span style="color: #2d9574;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">res</span> = <span style="color: #a45bad;">0</span>;
+      <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #67b11d;">(</span>i == <span style="color: #a45bad;">0</span><span style="color: #67b11d;">)</span> <span style="color: #67b11d;">{</span>
+        res = A<span style="color: #b1951d;">[</span>i<span style="color: #b1951d;">][</span>j<span style="color: #b1951d;">]</span>;
+      <span style="color: #67b11d;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #67b11d;">{</span>
+        res =  A<span style="color: #b1951d;">[</span>i<span style="color: #b1951d;">][</span>j<span style="color: #b1951d;">]</span> + Math.min<span style="color: #b1951d;">(</span>
+                helper<span style="color: #4f97d7;">(</span>A, i-<span style="color: #a45bad;">1</span>, j, memo<span style="color: #4f97d7;">)</span>,
+                Math.min<span style="color: #4f97d7;">(</span>
+                        helper<span style="color: #bc6ec5;">(</span>A, i-<span style="color: #a45bad;">1</span>, Math.min<span style="color: #2d9574;">(</span>A<span style="color: #9cb6ad;">[</span><span style="color: #a45bad;">0</span><span style="color: #9cb6ad;">]</span>.length - <span style="color: #a45bad;">1</span>, j+<span style="color: #a45bad;">1</span><span style="color: #2d9574;">)</span>, memo<span style="color: #bc6ec5;">)</span>,
+                        helper<span style="color: #bc6ec5;">(</span>A, i-<span style="color: #a45bad;">1</span>, Math.max<span style="color: #2d9574;">(</span><span style="color: #a45bad;">0</span>, j-<span style="color: #a45bad;">1</span><span style="color: #2d9574;">)</span>, memo<span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span><span style="color: #b1951d;">)</span>;
+      <span style="color: #67b11d;">}</span>     
+
+      memo<span style="color: #67b11d;">[</span>i<span style="color: #67b11d;">][</span>j<span style="color: #67b11d;">]</span> = res;
+      <span style="color: #4f97d7; font-weight: bold;">return</span> res;
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div></li>
+</ol>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-08 三 21:25</p>
+<p class="date">Created: 2020-04-09 四 13:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
