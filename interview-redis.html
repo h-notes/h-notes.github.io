@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-09 四 18:07 -->
+<!-- 2020-04-10 五 09:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -292,6 +292,13 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org690d2f3">Recend logs</a></li>
 <li><a href="#org34ab4fc">Common logs</a></li>
+</ul>
+</li>
+<li><a href="#org5205a14">Named counter usecase in redis&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org577a16b">在不同的时间精度下，网站的点击量</a></li>
+<li><a href="#orgcf242e9">实现细节</a></li>
+<li><a href="#org07a9f70">清理旧的数据</a></li>
 </ul>
 </li>
 </ul>
@@ -929,11 +936,166 @@ master 生成一个快照，并将它发送给 slave
 </div>
 </div>
 </div>
+<div id="outline-container-org5205a14" class="outline-3">
+<h3 id="org5205a14">Named counter usecase in redis&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org5205a14">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-10 五 08:25]</span></span>
+</p>
+</div>
+
+<div id="outline-container-org577a16b" class="outline-4">
+<h4 id="org577a16b">在不同的时间精度下，网站的点击量</h4>
+<div class="outline-text-4" id="text-org577a16b">
+<p>
+不同的时间精度对应不同的 named counter，每个 counter 保存最近 120 条样本数据。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcf242e9" class="outline-4">
+<h4 id="orgcf242e9">实现细节</h4>
+<div class="outline-text-4" id="text-orgcf242e9">
+<p>
+比如每 5 秒的点击量数据 key 设计成 count:5:hits，value 使用 hashmap。而 hashmap 的
+key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保存 最近 120 条数据。
+</p>
+
+<p>
+另外，使用 zset 保存目前存在的所有 counter，方便遍历。
+</p>
+
+<p>
+当有点击发生的时候，遍历所有的精度值，计算其 counter name，增加相应 counter 中对应的 key value。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">var PRECISION = [...]int64{1, 5, 60, 300, 3600, 18000, 86400};</span>
+<span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">UpdateCounter</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">name</span> <span style="color: #ce537a; font-weight: bold;">string</span>, <span style="color: #7590db;">count</span> <span style="color: #ce537a; font-weight: bold;">int64</span>, <span style="color: #7590db;">now</span> <span style="color: #ce537a; font-weight: bold;">int64</span><span style="color: #4f97d7;">)</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #4f97d7; font-weight: bold;">if</span> now == <span style="color: #a45bad;">0</span> <span style="color: #bc6ec5;">{</span>
+    now = time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #2d9574;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #2d9574;">()</span>
+  <span style="color: #bc6ec5;">}</span>
+
+  <span style="color: #7590db;">pipe</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">Pipeline</span><span style="color: #bc6ec5;">()</span>
+  <span style="color: #4f97d7; font-weight: bold;">for</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">prec</span> := <span style="color: #4f97d7; font-weight: bold;">range</span> common.PRECISION <span style="color: #bc6ec5;">{</span>
+    <span style="color: #7590db;">pnow</span> := <span style="color: #2d9574;">(</span>now / prec<span style="color: #2d9574;">)</span> * prec
+    <span style="color: #7590db;">hash</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"%d:%s"</span>, prec, name<span style="color: #2d9574;">)</span>
+    pipe.<span style="color: #bc6ec5; font-weight: bold;">ZAdd</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"known:"</span>, &amp;<span style="color: #ce537a; font-weight: bold;">redis.Z</span><span style="color: #67b11d;">{</span><span style="color: #a45bad;">Member</span>: hash, <span style="color: #a45bad;">Score</span>: <span style="color: #a45bad;">0</span><span style="color: #67b11d;">}</span><span style="color: #2d9574;">)</span>
+    pipe.<span style="color: #bc6ec5; font-weight: bold;">HIncrBy</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"count:"</span>+hash, strconv.<span style="color: #bc6ec5; font-weight: bold;">Itoa</span><span style="color: #67b11d;">(</span><span style="color: #bc6ec5; font-weight: bold;">int</span><span style="color: #b1951d;">(</span>pnow<span style="color: #b1951d;">)</span><span style="color: #67b11d;">)</span>, count<span style="color: #2d9574;">)</span>
+  <span style="color: #bc6ec5;">}</span>
+  <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">err</span> := pipe.<span style="color: #bc6ec5; font-weight: bold;">Exec</span><span style="color: #bc6ec5;">()</span>; err != <span style="color: #a45bad;">nil</span> <span style="color: #bc6ec5;">{</span>
+    log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"updateCounter err: "</span>, err<span style="color: #2d9574;">)</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org07a9f70" class="outline-4">
+<h4 id="org07a9f70">清理旧的数据</h4>
+<div class="outline-text-4" id="text-org07a9f70">
+<p>
+不断的 incur counter，最终会导致内存用尽，因此我们需要机制清理数据，对每个 counter 只保留有限条记录，比如 100 条。
+</p>
+
+<p>
+理想情况下可以使用 redis  EXPIRE，但是 EXPIRE 有个限制就是说它只能让
+整个 key 失效，在上面 counter 的场景中，我们是想让 hashmap 中的部分 key 失效而已。
+</p>
+
+<p>
+这种情况下，我们只能使用定期 daemon 来清理数据。
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="orgd64b8c9"></a>思路<br />
+<div class="outline-text-5" id="text-orgd64b8c9">
+<p>
+每一分钟查看每个 counter，如果其 hashmap 中有超出限制的数据，那么就将其删除。如果删除以后，该 counter 为空，那么就将该 counter 从
+已知 counter （zset) 中删除。
+</p>
+</div>
+</li>
+
+<li><a id="orgcf89dd3"></a>细节<br />
+<div class="outline-text-5" id="text-orgcf89dd3">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">CleanCounters</span><span style="color: #4f97d7;">()</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #7590db;">passes</span> := <span style="color: #a45bad;">0</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">for</span> <span style="color: #a45bad;">!</span>common.QUIT <span style="color: #bc6ec5;">{</span>
+    <span style="color: #7590db;">start</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #2d9574;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #2d9574;">()</span>
+    <span style="color: #4f97d7; font-weight: bold;">var</span> <span style="color: #7590db;">index</span> <span style="color: #ce537a; font-weight: bold;">int64</span> = <span style="color: #a45bad;">0</span>
+    <span style="color: #4f97d7; font-weight: bold;">for</span> index &lt; c.Conn.<span style="color: #bc6ec5; font-weight: bold;">ZCard</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"known:"</span><span style="color: #2d9574;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #2d9574;">()</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #7590db;">hash</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">ZRange</span><span style="color: #67b11d;">(</span><span style="color: #2d9574;">"known:"</span>, index, index<span style="color: #67b11d;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #67b11d;">()</span>
+      index++
+      <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #4f97d7;">len</span><span style="color: #67b11d;">(</span>hash<span style="color: #67b11d;">)</span> == <span style="color: #a45bad;">0</span> <span style="color: #67b11d;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">break</span>
+      <span style="color: #67b11d;">}</span>
+
+      <span style="color: #7590db;">hashValue</span> := hash<span style="color: #67b11d;">[</span><span style="color: #a45bad;">0</span><span style="color: #67b11d;">]</span>
+      <span style="color: #7590db;">prec</span>, <span style="color: #7590db;">_</span> := strconv.<span style="color: #bc6ec5; font-weight: bold;">Atoi</span><span style="color: #67b11d;">(</span>strings.<span style="color: #bc6ec5; font-weight: bold;">Split</span><span style="color: #b1951d;">(</span>hashValue, <span style="color: #2d9574;">":"</span><span style="color: #b1951d;">)[</span><span style="color: #a45bad;">0</span><span style="color: #b1951d;">]</span><span style="color: #67b11d;">)</span>
+      <span style="color: #7590db;">bprec</span> := prec / <span style="color: #a45bad;">60</span>
+      <span style="color: #4f97d7; font-weight: bold;">if</span> bprec == <span style="color: #a45bad;">0</span> <span style="color: #67b11d;">{</span>
+        bprec = <span style="color: #a45bad;">1</span>
+      <span style="color: #67b11d;">}</span>
+      <span style="color: #4f97d7; font-weight: bold;">if</span> passes%bprec != <span style="color: #a45bad;">0</span> <span style="color: #67b11d;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">continue</span>
+      <span style="color: #67b11d;">}</span>
+
+      <span style="color: #7590db;">hkey</span> := <span style="color: #2d9574;">"count:"</span> + hashValue
+      <span style="color: #7590db;">cutoff</span> := <span style="color: #bc6ec5; font-weight: bold;">int</span><span style="color: #67b11d;">(</span>time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #b1951d;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #b1951d;">()</span><span style="color: #67b11d;">)</span> - common.SAMPLECOUNT*prec
+      <span style="color: #7590db;">samples</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">HKeys</span><span style="color: #67b11d;">(</span>hkey<span style="color: #67b11d;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #67b11d;">()</span>
+      sort.<span style="color: #bc6ec5; font-weight: bold;">Slice</span><span style="color: #67b11d;">(</span>samples, <span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #b1951d;">(</span><span style="color: #7590db;">i</span>, <span style="color: #7590db;">j</span> <span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #b1951d;">)</span> <span style="color: #ce537a; font-weight: bold;">bool</span> <span style="color: #b1951d;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">return</span> samples<span style="color: #4f97d7;">[</span>i<span style="color: #4f97d7;">]</span> &lt; samples<span style="color: #4f97d7;">[</span>j<span style="color: #4f97d7;">]</span>
+      <span style="color: #b1951d;">}</span><span style="color: #67b11d;">)</span>
+      <span style="color: #7590db;">remove</span> := sort.<span style="color: #bc6ec5; font-weight: bold;">SearchStrings</span><span style="color: #67b11d;">(</span>samples, strconv.<span style="color: #bc6ec5; font-weight: bold;">Itoa</span><span style="color: #b1951d;">(</span>cutoff<span style="color: #b1951d;">)</span><span style="color: #67b11d;">)</span>
+
+      <span style="color: #4f97d7; font-weight: bold;">if</span> remove != <span style="color: #a45bad;">0</span> <span style="color: #67b11d;">{</span>
+        c.Conn.<span style="color: #bc6ec5; font-weight: bold;">HDel</span><span style="color: #b1951d;">(</span>hkey, samples<span style="color: #4f97d7;">[</span>:remove<span style="color: #4f97d7;">]</span>...<span style="color: #b1951d;">)</span>
+        <span style="color: #4f97d7; font-weight: bold;">if</span> remove == <span style="color: #4f97d7;">len</span><span style="color: #b1951d;">(</span>samples<span style="color: #b1951d;">)</span> <span style="color: #b1951d;">{</span>
+          <span style="color: #7590db;">err</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">Watch</span><span style="color: #4f97d7;">(</span><span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #bc6ec5;">(</span><span style="color: #7590db;">tx</span> *<span style="color: #ce537a; font-weight: bold;">redis.Tx</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">error</span> <span style="color: #bc6ec5;">{</span>
+            <span style="color: #4f97d7; font-weight: bold;">if</span> tx.<span style="color: #bc6ec5; font-weight: bold;">HLen</span><span style="color: #2d9574;">(</span>hkey<span style="color: #2d9574;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #2d9574;">()</span> == <span style="color: #a45bad;">0</span> <span style="color: #2d9574;">{</span>
+              <span style="color: #7590db;">pipe</span> := tx.<span style="color: #bc6ec5; font-weight: bold;">Pipeline</span><span style="color: #9cb6ad;">()</span>
+              pipe.<span style="color: #bc6ec5; font-weight: bold;">ZRem</span><span style="color: #9cb6ad;">(</span><span style="color: #2d9574;">"known:"</span>, hashValue<span style="color: #9cb6ad;">)</span>
+              <span style="color: #7590db;">_</span>, <span style="color: #7590db;">err</span> := pipe.<span style="color: #bc6ec5; font-weight: bold;">Exec</span><span style="color: #9cb6ad;">()</span>
+              <span style="color: #4f97d7; font-weight: bold;">if</span> err != <span style="color: #a45bad;">nil</span> <span style="color: #9cb6ad;">{</span>
+                log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #4f97d7;">(</span><span style="color: #2d9574;">"pipeline failed in CleanCounters: "</span>, err<span style="color: #4f97d7;">)</span>
+                <span style="color: #4f97d7; font-weight: bold;">return</span> err
+              <span style="color: #9cb6ad;">}</span>
+              index--
+            <span style="color: #2d9574;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #2d9574;">{</span>
+              tx.<span style="color: #bc6ec5; font-weight: bold;">Unwatch</span><span style="color: #9cb6ad;">()</span>
+            <span style="color: #2d9574;">}</span>
+            <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">nil</span>
+          <span style="color: #bc6ec5;">}</span>, hkey<span style="color: #4f97d7;">)</span>
+
+          <span style="color: #4f97d7; font-weight: bold;">if</span> err != <span style="color: #a45bad;">nil</span> <span style="color: #4f97d7;">{</span>
+            log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"watch err in CleanCounters: "</span>, err<span style="color: #bc6ec5;">)</span>
+            <span style="color: #4f97d7; font-weight: bold;">continue</span>
+          <span style="color: #4f97d7;">}</span>
+        <span style="color: #b1951d;">}</span>
+      <span style="color: #67b11d;">}</span>
+    <span style="color: #2d9574;">}</span>
+    passes++
+    <span style="color: #7590db;">duration</span> := utils.<span style="color: #bc6ec5; font-weight: bold;">Min</span><span style="color: #2d9574;">(</span>time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #67b11d;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #67b11d;">()</span>-start+<span style="color: #a45bad;">1</span>, <span style="color: #a45bad;">60</span><span style="color: #2d9574;">)</span>
+    time.<span style="color: #bc6ec5; font-weight: bold;">Sleep</span><span style="color: #2d9574;">(</span>time.<span style="color: #bc6ec5; font-weight: bold;">Duration</span><span style="color: #67b11d;">(</span>utils.<span style="color: #bc6ec5; font-weight: bold;">Max</span><span style="color: #b1951d;">(</span><span style="color: #a45bad;">60</span>-duration, <span style="color: #a45bad;">1</span><span style="color: #b1951d;">)</span><span style="color: #67b11d;">)</span> * time.Minute<span style="color: #2d9574;">)</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-09 四 18:07</p>
+<p class="date">Created: 2020-04-10 五 09:39</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
