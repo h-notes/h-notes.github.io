@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-10 五 09:39 -->
+<!-- 2020-04-10 五 09:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -1021,6 +1021,10 @@ key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保�
 
 <li><a id="orgcf89dd3"></a>细节<br />
 <div class="outline-text-5" id="text-orgcf89dd3">
+<p>
+对于精度超出 一分钟的 counter，那就每对应的精度进行一次实际的清理, 代码中 passes 实现了这一点。
+</p>
+
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">CleanCounters</span><span style="color: #4f97d7;">()</span> <span style="color: #4f97d7;">{</span>
   <span style="color: #7590db;">passes</span> := <span style="color: #a45bad;">0</span>
@@ -1095,7 +1099,7 @@ key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-10 五 09:39</p>
+<p class="date">Created: 2020-04-10 五 09:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
