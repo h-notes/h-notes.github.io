@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-10 五 09:57 -->
+<!-- 2020-04-12 日 09:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -299,6 +299,11 @@ for the JavaScript code in this tag.
 <li><a href="#org577a16b">在不同的时间精度下，网站的点击量</a></li>
 <li><a href="#orgcf242e9">实现细节</a></li>
 <li><a href="#org07a9f70">清理旧的数据</a></li>
+</ul>
+</li>
+<li><a href="#org105b91c">Storing statistics in Redis&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#orge94a853">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -1095,11 +1100,125 @@ key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保�
 </ul>
 </div>
 </div>
+<div id="outline-container-org105b91c" class="outline-3">
+<h3 id="org105b91c">Storing statistics in Redis&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
+<div class="outline-text-3" id="text-org105b91c">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-12 日 09:25]</span></span>
+</p>
+</div>
+
+<div id="outline-container-orge94a853" class="outline-4">
+<h4 id="orge94a853">Example</h4>
+<div class="outline-text-4" id="text-orge94a853">
+<p>
+统计 current<sub>hour</sub> 以及 保留 last<sub>hour</sub> 的特定页面的最大访问时间，最小访问时间，访问时间之和，平均访问时间等。
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org9b5bef0"></a>实现细节<br />
+<div class="outline-text-5" id="text-org9b5bef0">
+<p>
+使用 zset 保存数据，其中 member 为统计对象名字，score 为统计值。
+zset 的 key 例子 stats:profilePage:accessTime。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">UpdateStats</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">context</span>, <span style="color: #7590db;">types</span> <span style="color: #ce537a; font-weight: bold;">string</span>, <span style="color: #7590db;">value</span> <span style="color: #ce537a; font-weight: bold;">float64</span>, <span style="color: #7590db;">timeout</span> <span style="color: #ce537a; font-weight: bold;">int64</span><span style="color: #4f97d7;">)</span> <span style="color: #4f97d7;">[]</span><span style="color: #ce537a; font-weight: bold;">redis.Cmder</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #7590db;">destination</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"stats:%s:%s"</span>, context, types<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">startKey</span> := destination + <span style="color: #2d9574;">":start"</span>
+  <span style="color: #7590db;">end</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Add</span><span style="color: #bc6ec5;">(</span>time.<span style="color: #bc6ec5; font-weight: bold;">Duration</span><span style="color: #2d9574;">(</span>timeout<span style="color: #2d9574;">)</span> * time.Millisecond<span style="color: #bc6ec5;">)</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">var</span> <span style="color: #7590db;">res</span> <span style="color: #bc6ec5;">[]</span><span style="color: #ce537a; font-weight: bold;">redis.Cmder</span>
+  <span style="color: #4f97d7; font-weight: bold;">for</span> time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Before</span><span style="color: #bc6ec5;">(</span>end<span style="color: #bc6ec5;">)</span> <span style="color: #bc6ec5;">{</span>
+    <span style="color: #7590db;">err</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">Watch</span><span style="color: #2d9574;">(</span><span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #67b11d;">(</span><span style="color: #7590db;">tx</span> *<span style="color: #ce537a; font-weight: bold;">redis.Tx</span><span style="color: #67b11d;">)</span> <span style="color: #ce537a; font-weight: bold;">error</span> <span style="color: #67b11d;">{</span>
+      <span style="color: #7590db;">hourStart</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #b1951d;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Local</span><span style="color: #b1951d;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Hour</span><span style="color: #b1951d;">()</span>
+      <span style="color: #7590db;">existing</span>, <span style="color: #7590db;">_</span> := strconv.<span style="color: #bc6ec5; font-weight: bold;">Atoi</span><span style="color: #b1951d;">(</span>tx.<span style="color: #bc6ec5; font-weight: bold;">Get</span><span style="color: #4f97d7;">(</span>startKey<span style="color: #4f97d7;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #4f97d7;">()</span><span style="color: #b1951d;">)</span>
+
+      <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">err</span> := tx.<span style="color: #bc6ec5; font-weight: bold;">Pipelined</span><span style="color: #b1951d;">(</span><span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">pipeliner</span> <span style="color: #ce537a; font-weight: bold;">redis.Pipeliner</span><span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">error</span> <span style="color: #4f97d7;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">if</span> existing == <span style="color: #a45bad;">0</span> <span style="color: #bc6ec5;">{</span>
+          pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Set</span><span style="color: #2d9574;">(</span>startKey, hourStart, <span style="color: #a45bad;">0</span><span style="color: #2d9574;">)</span>
+        <span style="color: #bc6ec5;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #4f97d7; font-weight: bold;">if</span> existing &lt; hourStart <span style="color: #bc6ec5;">{</span>
+          pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Rename</span><span style="color: #2d9574;">(</span>destination, destination+<span style="color: #2d9574;">":last"</span><span style="color: #2d9574;">)</span>
+          pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Rename</span><span style="color: #2d9574;">(</span>startKey, destination+<span style="color: #2d9574;">":pstart"</span><span style="color: #2d9574;">)</span>
+          pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Set</span><span style="color: #2d9574;">(</span>startKey, hourStart, <span style="color: #a45bad;">0</span><span style="color: #2d9574;">)</span>
+        <span style="color: #bc6ec5;">}</span>
+
+        <span style="color: #7590db;">tkey1</span> := uuid.<span style="color: #bc6ec5; font-weight: bold;">NewV4</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">String</span><span style="color: #bc6ec5;">()</span>
+        <span style="color: #7590db;">tkey2</span> := uuid.<span style="color: #bc6ec5; font-weight: bold;">NewV4</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">String</span><span style="color: #bc6ec5;">()</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZAdd</span><span style="color: #bc6ec5;">(</span>tkey1, &amp;<span style="color: #ce537a; font-weight: bold;">redis.Z</span><span style="color: #2d9574;">{</span><span style="color: #a45bad;">Member</span>: <span style="color: #2d9574;">"min"</span>, <span style="color: #a45bad;">Score</span>: value<span style="color: #2d9574;">}</span><span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZAdd</span><span style="color: #bc6ec5;">(</span>tkey2, &amp;<span style="color: #ce537a; font-weight: bold;">redis.Z</span><span style="color: #2d9574;">{</span><span style="color: #a45bad;">Member</span>: <span style="color: #2d9574;">"max"</span>, <span style="color: #a45bad;">Score</span>: value<span style="color: #2d9574;">}</span><span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZUnionStore</span><span style="color: #bc6ec5;">(</span>destination, &amp;<span style="color: #ce537a; font-weight: bold;">redis.ZStore</span><span style="color: #2d9574;">{</span><span style="color: #a45bad;">Aggregate</span>: <span style="color: #2d9574;">"MIN"</span>, <span style="color: #a45bad;">Keys</span>: <span style="color: #9cb6ad;">[]</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #9cb6ad;">{</span>destination, tkey1<span style="color: #9cb6ad;">}</span><span style="color: #2d9574;">}</span><span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZUnionStore</span><span style="color: #bc6ec5;">(</span>destination, &amp;<span style="color: #ce537a; font-weight: bold;">redis.ZStore</span><span style="color: #2d9574;">{</span><span style="color: #a45bad;">Aggregate</span>: <span style="color: #2d9574;">"MAX"</span>, <span style="color: #a45bad;">Keys</span>: <span style="color: #9cb6ad;">[]</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #9cb6ad;">{</span>destination, tkey2<span style="color: #9cb6ad;">}</span><span style="color: #2d9574;">}</span><span style="color: #bc6ec5;">)</span>
+
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Del</span><span style="color: #bc6ec5;">(</span>tkey1, tkey2<span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZIncrBy</span><span style="color: #bc6ec5;">(</span>destination, <span style="color: #a45bad;">1</span>, <span style="color: #2d9574;">"count"</span><span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZIncrBy</span><span style="color: #bc6ec5;">(</span>destination, value, <span style="color: #2d9574;">"sum"</span><span style="color: #bc6ec5;">)</span>
+        pipeliner.<span style="color: #bc6ec5; font-weight: bold;">ZIncrBy</span><span style="color: #bc6ec5;">(</span>destination, value*value, <span style="color: #2d9574;">"sumq"</span><span style="color: #bc6ec5;">)</span>
+        res, _ = pipeliner.<span style="color: #bc6ec5; font-weight: bold;">Exec</span><span style="color: #bc6ec5;">()</span>
+        res = res<span style="color: #bc6ec5;">[</span><span style="color: #4f97d7;">len</span><span style="color: #2d9574;">(</span>res<span style="color: #2d9574;">)</span>-<span style="color: #a45bad;">3</span>:<span style="color: #bc6ec5;">]</span>
+        <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">nil</span>
+      <span style="color: #4f97d7;">}</span><span style="color: #b1951d;">)</span>; err != <span style="color: #a45bad;">nil</span> <span style="color: #b1951d;">{</span>
+        log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #4f97d7;">(</span><span style="color: #2d9574;">"pipeline filed in UpdateStats: "</span>, err<span style="color: #4f97d7;">)</span>
+        <span style="color: #4f97d7; font-weight: bold;">return</span> err
+      <span style="color: #b1951d;">}</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">nil</span>
+    <span style="color: #67b11d;">}</span>, startKey<span style="color: #2d9574;">)</span>
+
+    <span style="color: #4f97d7; font-weight: bold;">if</span> err != <span style="color: #a45bad;">nil</span> <span style="color: #2d9574;">{</span>
+      log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #67b11d;">(</span><span style="color: #2d9574;">"watch filed in UpdateStats: "</span>, err<span style="color: #67b11d;">)</span>
+      <span style="color: #4f97d7; font-weight: bold;">continue</span>
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+  <span style="color: #4f97d7; font-weight: bold;">return</span> res
+<span style="color: #4f97d7;">}</span>
+
+<span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">GetStats</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">context</span>, <span style="color: #7590db;">types</span> <span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">)</span> <span style="color: #4f97d7; font-weight: bold;">map</span><span style="color: #4f97d7;">[</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">]</span><span style="color: #ce537a; font-weight: bold;">float64</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #7590db;">key</span> := fmt.<span style="color: #bc6ec5; font-weight: bold;">Sprintf</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"stats:%s:%s"</span>, context, types<span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">stats</span> := <span style="color: #4f97d7; font-weight: bold;">map</span><span style="color: #bc6ec5;">[</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">]</span><span style="color: #ce537a; font-weight: bold;">float64</span><span style="color: #bc6ec5;">{}</span>
+  <span style="color: #7590db;">data</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">ZRangeWithScores</span><span style="color: #bc6ec5;">(</span>key, <span style="color: #a45bad;">0</span>, -<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #bc6ec5;">()</span>
+  <span style="color: #4f97d7; font-weight: bold;">for</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">v</span> := <span style="color: #4f97d7; font-weight: bold;">range</span> data <span style="color: #bc6ec5;">{</span>
+    stats<span style="color: #2d9574;">[</span>v.Member.<span style="color: #67b11d;">(</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #67b11d;">)</span><span style="color: #2d9574;">]</span> = v.Score
+  <span style="color: #bc6ec5;">}</span>
+  stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"average"</span><span style="color: #bc6ec5;">]</span> = stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"sum"</span><span style="color: #bc6ec5;">]</span> / stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"count"</span><span style="color: #bc6ec5;">]</span>
+  <span style="color: #7590db;">numerator</span> := stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"sumq"</span><span style="color: #bc6ec5;">]</span> - <span style="color: #bc6ec5;">(</span>math.<span style="color: #bc6ec5; font-weight: bold;">Pow</span><span style="color: #2d9574;">(</span>stats<span style="color: #67b11d;">[</span><span style="color: #2d9574;">"sum"</span><span style="color: #67b11d;">]</span>, <span style="color: #a45bad;">2</span><span style="color: #2d9574;">)</span> / stats<span style="color: #2d9574;">[</span><span style="color: #2d9574;">"count"</span><span style="color: #2d9574;">]</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">count</span> := stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"count"</span><span style="color: #bc6ec5;">]</span>
+  <span style="color: #4f97d7; font-weight: bold;">if</span> count &gt; <span style="color: #a45bad;">1</span> <span style="color: #bc6ec5;">{</span>
+    count--
+  <span style="color: #bc6ec5;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #bc6ec5;">{</span>
+    count = <span style="color: #a45bad;">1</span>
+  <span style="color: #bc6ec5;">}</span>
+  stats<span style="color: #bc6ec5;">[</span><span style="color: #2d9574;">"stddev"</span><span style="color: #bc6ec5;">]</span> = math.<span style="color: #bc6ec5; font-weight: bold;">Pow</span><span style="color: #bc6ec5;">(</span>numerator/count, <span style="color: #a45bad;">0</span>.<span style="color: #a45bad;">5</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #4f97d7; font-weight: bold;">return</span> stats
+<span style="color: #4f97d7;">}</span>
+
+<span style="color: #4f97d7; font-weight: bold;">func</span> <span style="color: #4f97d7;">(</span><span style="color: #7590db;">c</span> *<span style="color: #ce537a; font-weight: bold;">Client</span><span style="color: #4f97d7;">)</span> <span style="color: #bc6ec5; font-weight: bold;">AccessTime</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">context</span> <span style="color: #ce537a; font-weight: bold;">string</span>, <span style="color: #7590db;">f</span> <span style="color: #4f97d7; font-weight: bold;">func</span><span style="color: #bc6ec5;">()</span><span style="color: #4f97d7;">)</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #7590db;">start</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #bc6ec5;">()</span>
+  <span style="color: #bc6ec5; font-weight: bold;">f</span><span style="color: #bc6ec5;">()</span>
+  <span style="color: #7590db;">delta</span> := time.<span style="color: #bc6ec5; font-weight: bold;">Now</span><span style="color: #bc6ec5;">()</span>.<span style="color: #bc6ec5; font-weight: bold;">Unix</span><span style="color: #bc6ec5;">()</span> - start
+  <span style="color: #7590db;">stats</span> := c.<span style="color: #bc6ec5; font-weight: bold;">UpdateStats</span><span style="color: #bc6ec5;">(</span>context, <span style="color: #2d9574;">"AccessTime"</span>, <span style="color: #bc6ec5; font-weight: bold;">float64</span><span style="color: #2d9574;">(</span>delta<span style="color: #2d9574;">)</span>, <span style="color: #a45bad;">5</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #7590db;">average</span> := stats<span style="color: #bc6ec5;">[</span><span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">]</span>.<span style="color: #bc6ec5;">(</span>*<span style="color: #ce537a; font-weight: bold;">redis.FloatCmd</span><span style="color: #bc6ec5;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #bc6ec5;">()</span> / stats<span style="color: #bc6ec5;">[</span><span style="color: #a45bad;">0</span><span style="color: #bc6ec5;">]</span>.<span style="color: #bc6ec5;">(</span>*<span style="color: #ce537a; font-weight: bold;">redis.FloatCmd</span><span style="color: #bc6ec5;">)</span>.<span style="color: #bc6ec5; font-weight: bold;">Val</span><span style="color: #bc6ec5;">()</span>
+
+  <span style="color: #7590db;">pipe</span> := c.Conn.<span style="color: #bc6ec5; font-weight: bold;">TxPipeline</span><span style="color: #bc6ec5;">()</span>
+  pipe.<span style="color: #bc6ec5; font-weight: bold;">ZAdd</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"slowest:AccessTime"</span>, &amp;<span style="color: #ce537a; font-weight: bold;">redis.Z</span><span style="color: #2d9574;">{</span><span style="color: #a45bad;">Member</span>:context, <span style="color: #a45bad;">Score</span>: average<span style="color: #2d9574;">}</span><span style="color: #bc6ec5;">)</span>
+  pipe.<span style="color: #bc6ec5; font-weight: bold;">ZRemRangeByRank</span><span style="color: #bc6ec5;">(</span><span style="color: #2d9574;">"slowest:AccessTime"</span>, <span style="color: #a45bad;">0</span>, -<span style="color: #a45bad;">101</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #7590db;">_</span>, <span style="color: #7590db;">err</span> := pipe.<span style="color: #bc6ec5; font-weight: bold;">Exec</span><span style="color: #bc6ec5;">()</span>; err != <span style="color: #a45bad;">nil</span> <span style="color: #bc6ec5;">{</span>
+    log.<span style="color: #bc6ec5; font-weight: bold;">Println</span><span style="color: #2d9574;">(</span><span style="color: #2d9574;">"pipeline err in AccessTime: "</span>, err<span style="color: #2d9574;">)</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-10 五 09:57</p>
+<p class="date">Created: 2020-04-12 日 09:40</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
