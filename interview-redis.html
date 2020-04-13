@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-12 日 11:40 -->
+<!-- 2020-04-13 一 12:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -297,7 +297,7 @@ for the JavaScript code in this tag.
 <li><a href="#org5205a14">Named counter usecase in redis&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
 <ul>
 <li><a href="#org577a16b">在不同的时间精度下，网站的点击量</a></li>
-<li><a href="#org9b5bef0">实现细节</a></li>
+<li><a href="#org972917e">实现细节</a></li>
 <li><a href="#org07a9f70">清理旧的数据</a></li>
 </ul>
 </li>
@@ -958,9 +958,9 @@ master 生成一个快照，并将它发送给 slave
 </div>
 </div>
 
-<div id="outline-container-org9b5bef0" class="outline-4">
-<h4 id="org9b5bef0">实现细节</h4>
-<div class="outline-text-4" id="text-org9b5bef0">
+<div id="outline-container-org972917e" class="outline-4">
+<h4 id="org972917e">实现细节</h4>
+<div class="outline-text-4" id="text-org972917e">
 <p>
 比如每 5 秒的点击量数据 key 设计成 count:5:hits，value 使用 hashmap。而 hashmap 的
 key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保存 最近 120 条数据。
@@ -1117,8 +1117,8 @@ key 为每 5 秒的起始时间，value 为点击数。每个 hashmap 中只保�
 </div>
 
 <ul class="org-ul">
-<li><a id="org972917e"></a>实现细节<br />
-<div class="outline-text-5" id="text-org972917e">
+<li><a id="org77b4436"></a>实现细节<br />
+<div class="outline-text-5" id="text-org77b4436">
 <p>
 使用 zset 保存数据，其中 member 为统计对象名字，score 为统计值。
 zset 的 key 例子 stats:profilePage:accessTime。
@@ -1218,7 +1218,7 @@ zset 的 key 例子 stats:profilePage:accessTime。
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-12 日 11:40</p>
+<p class="date">Created: 2020-04-13 一 12:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

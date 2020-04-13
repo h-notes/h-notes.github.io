@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-12 日 11:40 -->
+<!-- 2020-04-13 一 12:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -262,6 +262,9 @@ for the JavaScript code in this tag.
 <li><a href="#org218dfca">Multicolumn Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orgd29f482">Clustered Indexes (innodb B+ tree index)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org9c6ce17">covering index.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org6f64ba8">Using Index Scans for sorts&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#org15cb82f">Redundant and Duplicate Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orge7accbd">Unused Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 </ul>
 </li>
 <li><a href="#orgd97c84d">MySQL transpose op table&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
@@ -273,7 +276,6 @@ for the JavaScript code in this tag.
 <li><a href="#orge69a010">update statements&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org5002616">一些具体的查询问题&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org8820501">Hash index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
-<li><a href="#org0186085">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orge6b491a">MySQL index notion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#org337d456">B+ tree index limits&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
 <li><a href="#orga68e3e5">full-text index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
@@ -424,6 +426,104 @@ actually be an indication of a poorly indexed table。
 <li>当你发起一个查询，它被一个 index 覆盖，那么在 EXPLAIN 的 Extra column 会看到 ”Using index".</li>
 </ol>
 </div>
+</div>
+<div id="outline-container-org6f64ba8" class="outline-4">
+<h4 id="org6f64ba8">Using Index Scans for sorts&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org6f64ba8">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-12 日 20:46]</span></span>
+</p>
+
+<p>
+You can tell when MySQL plans to scan an index by looking for "index"
+in the <b>type</b> column in EXPLAIN.
+</p>
+
+<p>
+Ordering the results by the index works only when the index’s order is exactly the same
+as the ORDER BY clause and all columns are sorted in the same direction (ascending or
+descending)
+</p>
+
+<p>
+One case where the ORDER BY clause doesn’t have to specify a leftmost prefix of the
+index is if there are constants for the leading columns. If the WHERE clause or a JOIN
+clause specifies constants for these columns, they can “fill the gaps” in the index.
+</p>
+</div>
+</div>
+<div id="outline-container-org15cb82f" class="outline-4">
+<h4 id="org15cb82f">Redundant and Duplicate Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-org15cb82f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-13 一 08:49]</span></span>
+</p>
+
+<p>
+避免建立重复的 index, MySQL 不会检测到这是一个错误，它会单独维护每个重复的 index。
+当优化器优化查询时，它会考虑每个索引，这样会影响性能。
+</p>
+
+<p>
+Duplicate indexes are indexes of the same type, created on the same set of columns in
+the same order. 
+</p>
+
+<p>
+冗余的索引不同与重复的索引。例如，在 B+ tree index 中，如有有一个在 （A,B）上的索引，那么索引（A) 就是冗余的。
+</p>
+
+<p>
+大多数情况下，我们应该避免冗余索引，通过扩展已经存在的索引而不是新建索引。如果扩展已经存在的索引会使得它太长，
+那么，可以考虑新建冗余索引。
+</p>
+
+<p>
+过多的索引会导致 INSERT, UPDATE, DELETE 变慢。
+</p>
+</div>
+</div>
+<div id="outline-container-orge7accbd" class="outline-4">
+<h4 id="orge7accbd">Unused Indexes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-orge7accbd">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-13 一 09:08]</span></span>
+</p>
+
+<p>
+除了重复索引以及冗余索引，可能还存在一些 存储引擎 不会去使用的索引。
+</p>
+
+<p>
+有两种方法可以识别出无用的索引:
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org626fbc2"></a>Simple<br />
+<div class="outline-text-5" id="text-org626fbc2">
+<p>
+Perhaps the easiest and most accurate is the <b>INFORMATION<sub>SCHEMA.INDEX</sub><sub>STATISTICS</sub></b> table
+in Percona Server and MariaDB.
+</p>
+
+<p>
+Just enable the <b>userstats</b> server variable (it’s disabled
+by default) and let the server run for a while, and you’ll be able to see how much each
+index is used.
+</p>
+</div>
+</li>
+
+<li><a id="org2190fb9"></a>Other<br />
+<div class="outline-text-5" id="text-org2190fb9">
+<p>
+Alternatively, you can use the pt-index-usage tool included in Percona Toolkit. This
+tool reads a log of queries and executes EXPLAIN with each one. 
+</p>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div id="outline-container-orgd97c84d" class="outline-3">
@@ -639,7 +739,6 @@ not depart<sub>id</sub>, use depart<sub>name</sub>
 </div>
 </div>
 
-
 <div id="outline-container-org8820501" class="outline-3">
 <h3 id="org8820501">Hash index&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
 <div class="outline-text-3" id="text-org8820501">
@@ -660,23 +759,6 @@ not depart<sub>id</sub>, use depart<sub>name</sub>
 假如现在我们要为 column A 添加索引，那么可以新添加一个 column A<sub>hash</sub>，然后将 A<sub>hash</sub> 也作为一个 key。
 </p></li>
 </ol>
-</div>
-</div>
-<div id="outline-container-org0186085" class="outline-3">
-<h3 id="org0186085">Dockerfile ONBUILD command&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
-<div class="outline-text-3" id="text-org0186085">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">[2020-04-05 日 14:45]</span></span>
-</p>
-
-<p>
-这是一个 prefix command
-</p>
-
-<p>
-当其他 Dockerfile command 被 prefix ONBUILD，那么该 command 不会在当前 Dockerfile 被 build 时运行，
-而是以该 Dockerfile 构建的镜像为基础的孩子 Dockerfile 被 build 时在运行。
-</p>
 </div>
 </div>
 <div id="outline-container-orge6b491a" class="outline-3">
@@ -730,7 +812,7 @@ full-text index is for MATCH AGAINST operations.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-12 日 11:40</p>
+<p class="date">Created: 2020-04-13 一 12:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
