@@ -252,49 +252,70 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge434c0d">Notes</a>
+<li><a href="#org82c678c">Task</a>
 <ul>
-<li><a href="#orgb09c0e2">object state&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+<li><a href="#orgcf74914"><span class="todo TODO">TODO</span> Read the art of command line</a></li>
+</ul>
+</li>
+<li><a href="#orgbc93247">Notes</a>
+<ul>
+<li><a href="#org2185775">network</a>
+<ul>
+<li><a href="#orga1568d4">Check what processes are listening&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge434c0d" class="outline-2">
-<h2 id="orge434c0d">Notes</h2>
-<div class="outline-text-2" id="text-orge434c0d">
+<div id="outline-container-org82c678c" class="outline-2">
+<h2 id="org82c678c">Task</h2>
+<div class="outline-text-2" id="text-org82c678c">
 </div>
-<div id="outline-container-orgb09c0e2" class="outline-3">
-<h3 id="orgb09c0e2">object state&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h3>
-<div class="outline-text-3" id="text-orgb09c0e2">
+<div id="outline-container-orgcf74914" class="outline-3">
+<h3 id="orgcf74914"><span class="todo TODO">TODO</span> Read the art of command line</h3>
+<div class="outline-text-3" id="text-orgcf74914">
+<ul class="org-ul">
+<li>State "DONE"       from "NEXT"       <span class="timestamp-wrapper"><span class="timestamp">[2020-04-14 二 20:22]</span></span></li>
+</ul>
 <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2020-04-08 三 17:56]</span></span>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-14 二 20:20]</span></span>
+SCHEDULED: <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-15 三 .+1d&gt;</span></span>
 </p>
-
-<ol class="org-ol">
-<li>An object is said to "have state" if its behaviour is influenced by its history.</li>
-<li><p>
-在引入赋值之前，变量仅仅是一个值（value)的名字，也就是说，相同的变量可以使用同一个值代替，
-引入赋值之后，变量发生了概念性的转变，变量以一个存储位置的引用，而一个变量所引用的存储位置中值是可变的。
-</p>
-
-<blockquote>
 <p>
-The trouble here is that substitution is based ultimately on the notion that
-the symbols in our language are essentially names for values. 
+:STYLE: habit
+:REPEAT<sub>TO</sub><sub>STATE</sub>: NEXT
 </p>
 
 <p>
-But as soon as we introduce set! and the idea that the value of a variable can change, 
-a variable can no longer be simply a name. 
+<a href="https://github.com/jlevy/the-art-of-command-line">The art of command line</a> 
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbc93247" class="outline-2">
+<h2 id="orgbc93247">Notes</h2>
+<div class="outline-text-2" id="text-orgbc93247">
+</div>
+<div id="outline-container-org2185775" class="outline-3">
+<h3 id="org2185775">network</h3>
+<div class="outline-text-3" id="text-org2185775">
+</div>
+<div id="outline-container-orga1568d4" class="outline-4">
+<h4 id="orga1568d4">Check what processes are listening&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h4>
+<div class="outline-text-4" id="text-orga1568d4">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-14 二 20:17]</span></span>
 </p>
 
 <p>
-Now a variable somehow refers to a place where a value can be stored, and the value stored at this place can change.
+<b>netstat -lntp</b>
+<b>ss -plat</b>
+<b>lsof -iTCP -sTCP:LISTEN -P -n</b>
 </p>
-</blockquote></li>
-</ol>
+</div>
 </div>
 </div>
 </div>

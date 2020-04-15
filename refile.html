@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-13 一 12:23 -->
+<!-- 2020-04-15 三 17:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -247,6 +247,12 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgfa891b5"><span class="todo TODO">TODO</span> 有关 海量数据处理 面试题目</a></li>
+<li><a href="#org3ccbf61">Arithmetic Slices&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></a>
+<ul>
+<li><a href="#org9590a79">Description</a></li>
+<li><a href="#orgd2f8ccb">Solution</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -263,10 +269,103 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
+<div id="outline-container-org3ccbf61" class="outline-2">
+<h2 id="org3ccbf61">Arithmetic Slices&#xa0;&#xa0;&#xa0;<span class="tag"><span class="NOTE">NOTE</span></span></h2>
+<div class="outline-text-2" id="text-org3ccbf61">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2020-04-15 三 17:13]</span></span>
+</p>
+</div>
+
+<div id="outline-container-org9590a79" class="outline-3">
+<h3 id="org9590a79">Description</h3>
+<div class="outline-text-3" id="text-org9590a79">
+<p>
+A sequence of number is called arithmetic if it consists of at least three elements and if the difference between any two consecutive elements is the same.
+</p>
+
+<p>
+For example, these are arithmetic sequence:
+</p>
+
+<p>
+1, 3, 5, 7, 9
+7, 7, 7, 7
+3, -1, -5, -9
+</p>
+
+<p>
+The following sequence is not arithmetic.
+</p>
+
+<p>
+1, 1, 2, 5, 7
+</p>
+
+<p>
+A zero-indexed array A consisting of N numbers is given. A slice of that array is any pair of integers (P, Q) such that 0 &lt;= P &lt; Q &lt; N.
+</p>
+
+<p>
+A slice (P, Q) of array A is called arithmetic if the sequence:
+A[P], A[p + 1], &#x2026;, A[Q - 1], A[Q] is arithmetic. In particular, this means that P + 1 &lt; Q.
+</p>
+
+<p>
+The function should return the number of arithmetic slices in the array A.
+</p>
+
+
+<p>
+Example:
+</p>
+
+<p>
+A = [1, 2, 3, 4]
+</p>
+
+<p>
+return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd2f8ccb" class="outline-3">
+<h3 id="orgd2f8ccb">Solution</h3>
+<div class="outline-text-3" id="text-orgd2f8ccb">
+<p>
+从第三个元素开始遍历数组，使用一个变量 cur 记录当前的间隔相同的连续的等差三元组个数，变量 sum 记录当前发现的当差数列个数。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">Solution</span> <span style="color: #4f97d7;">{</span>
+  <span style="color: #4f97d7; font-weight: bold;">public</span> <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #bc6ec5; font-weight: bold;">numberOfArithmeticSlices</span><span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">[]</span> <span style="color: #7590db;">A</span><span style="color: #bc6ec5;">)</span> <span style="color: #bc6ec5;">{</span>
+    <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #2d9574;">(</span>A == <span style="color: #a45bad;">null</span> || A.length &lt; <span style="color: #a45bad;">2</span><span style="color: #2d9574;">)</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #a45bad;">0</span>;
+    <span style="color: #2d9574;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #2d9574;">{</span>
+      <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">cur</span> = <span style="color: #a45bad;">0</span>;
+      <span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">sum</span> = <span style="color: #a45bad;">0</span>;
+      <span style="color: #4f97d7; font-weight: bold;">for</span> <span style="color: #67b11d;">(</span><span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">i</span> = <span style="color: #a45bad;">2</span>; i &lt; A.<span style="color: #ce537a; font-weight: bold;">length</span>; i++<span style="color: #67b11d;">)</span> <span style="color: #67b11d;">{</span>
+        <span style="color: #4f97d7; font-weight: bold;">if</span> <span style="color: #b1951d;">(</span>A<span style="color: #4f97d7;">[</span>i<span style="color: #4f97d7;">]</span> - A<span style="color: #4f97d7;">[</span>i-<span style="color: #a45bad;">1</span><span style="color: #4f97d7;">]</span> == A<span style="color: #4f97d7;">[</span>i-<span style="color: #a45bad;">1</span><span style="color: #4f97d7;">]</span> - A<span style="color: #4f97d7;">[</span>i-<span style="color: #a45bad;">2</span><span style="color: #4f97d7;">]</span><span style="color: #b1951d;">)</span> <span style="color: #b1951d;">{</span>
+          cur += <span style="color: #a45bad;">1</span>;
+          sum += cur;
+        <span style="color: #b1951d;">}</span> <span style="color: #4f97d7; font-weight: bold;">else</span> <span style="color: #b1951d;">{</span>
+          cur = <span style="color: #a45bad;">0</span>;
+        <span style="color: #b1951d;">}</span>
+      <span style="color: #67b11d;">}</span>
+      <span style="color: #4f97d7; font-weight: bold;">return</span> sum;
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: melp</p>
-<p class="date">Created: 2020-04-13 一 12:23</p>
+<p class="date">Created: 2020-04-15 三 17:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
